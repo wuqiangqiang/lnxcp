@@ -249,6 +249,12 @@ namespace FoodSafetyMonitoring.Manager
                     row["INFO_CODE"] = maxID + 1;
                 }
 
+                if (_level.SelectedIndex < 1)
+                {
+                    Toolkit.MessageBox.Show("请选择部门级别!", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
                 if (_station.Text == "")
                 {
                     if (row["FLAG_TIER"].ToString() == "4")
@@ -261,12 +267,6 @@ namespace FoodSafetyMonitoring.Manager
                         Toolkit.MessageBox.Show("请输入部门名称!", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
                         return;
                     }
-                }
-
-                if (_level.SelectedIndex < 1)
-                {
-                    Toolkit.MessageBox.Show("请选择部门级别!", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
                 }
 
                 row["INFO_NAME"] = _station.Text;
@@ -283,7 +283,15 @@ namespace FoodSafetyMonitoring.Manager
 
                 row["Province"] = (_lower_provice.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
                 row["City"] = (_lower_city.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
-                row["Country"] = (_lower_country.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
+                if(_lower_country.Items.Count <= 0)
+                {
+                    row["Country"] = "";
+                }
+                else
+                {
+                    row["Country"] = (_lower_country.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
+                }
+                
                 row["INFO_NAME"] = _station.Text;
                 row["address"] = _address.Text;
                 row["CONTACTER"] = _principal_name.Text;
@@ -399,8 +407,23 @@ namespace FoodSafetyMonitoring.Manager
                     type = "3";
                 }
 
-                string sql = String.Format("UPDATE sys_client_sysdept set INFO_NAME='{0}',ADDRESS='{1}',CONTACTER='{2}',TEL='{3}',PHONE='{4}',TYPE='{5}',supplierId = '{6}'  where INFO_CODE='{7}';"
-                , _station.Text, _address.Text, _principal_name.Text, _phone.Text, _contact_number.Text, type, (_Supplier.SelectedItem as System.Windows.Controls.Label).Tag, department.Row["INFO_CODE"]);
+                string Province = (_lower_provice.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
+                string City = (_lower_city.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
+                string Country = "";
+                if (_lower_country.Items.Count <= 0)
+                {
+                    Country = "";
+                }
+                else
+                {
+                    Country = (_lower_country.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
+                }
+
+                string sql = String.Format("UPDATE sys_client_sysdept set INFO_NAME='{0}',ADDRESS='{1}',CONTACTER='{2}',TEL='{3}',PHONE='{4}',TYPE='{5}',supplierId = '{6}',"+
+                    "PROVINCE = '{7}',CITY = '{8}',COUNTRY ='{9}'  where INFO_CODE='{10}';"
+                , _station.Text, _address.Text, _principal_name.Text, _phone.Text, _contact_number.Text, type, 
+                (_Supplier.SelectedItem as System.Windows.Controls.Label).Tag,
+                Province, City, Country,department.Row["INFO_CODE"]);
 
                 try
                 {
@@ -445,6 +468,9 @@ namespace FoodSafetyMonitoring.Manager
                 department.Row["phone"] = _contact_number.Text;
                 department.Row["supplierId"] = (_Supplier.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
                 department.Row["type"] = type;
+                department.Row["Province"] = Province;
+                department.Row["City"] = City;
+                department.Row["Country"] = Country;
                 _edit.IsEnabled = true;
             }
             else
@@ -672,6 +698,7 @@ namespace FoodSafetyMonitoring.Manager
                 _lower_provice.Visibility = Visibility.Hidden;
                 _lower_city.Visibility = Visibility.Hidden;
                 _lower_country.Visibility = Visibility.Hidden;
+                _lower_provice.IsEnabled = true;
             }
             else 
             {
@@ -680,9 +707,34 @@ namespace FoodSafetyMonitoring.Manager
                 _lower_provice.Visibility = Visibility.Visible;
                 _lower_city.Visibility = Visibility.Visible;
                 _lower_country.Visibility = Visibility.Visible;
-                _lower_provice.Text = GetName(department.Row["province"].ToString());
-                _lower_city.Text = GetName(department.Row["city"].ToString());
-                _lower_country.Text = GetName(department.Row["country"].ToString());
+                _lower_provice.IsEnabled = false;
+                string provice = GetName(department.Row["province"].ToString());
+                if (provice == "")
+                {
+                    _lower_provice.SelectedIndex = 0;
+                }
+                else
+                {
+                    _lower_provice.Text = provice;
+                }
+                string city = GetName(department.Row["city"].ToString());
+                if (city == "")
+                {
+                    _lower_city.SelectedIndex = 0;
+                }
+                else
+                {
+                    _lower_city.Text = city;
+                }
+                string country = GetName(department.Row["country"].ToString());
+                if (country == "")
+                {
+                    _lower_country.SelectedIndex = 0;
+                }
+                else
+                {
+                    _lower_country.Text = country;
+                }
             }
         }
 
@@ -717,6 +769,39 @@ namespace FoodSafetyMonitoring.Manager
                 _Supplier.IsEnabled = true;
             }
 
+            Department department = _add.Tag as Department;
+
+            _lower_city.SelectedIndex = 0;
+            DataRow[] levels;
+            switch (department.Row["FLAG_TIER"].ToString())
+            {
+                case "0": _lower_provice.IsEnabled = true;
+                    _lower_provice.SelectedIndex = 0;
+                    _lower_city.Items.Clear();
+                    levels = dt_level.Select("levelid = '1'");
+                    ComboboxTool.InitComboboxSource(_level, levels, "lr");
+                    _level.SelectedIndex = 1;
+                    break;
+                case "1": _lower_provice.Text = GetName(department.Row["province"].ToString());
+                    _lower_provice.IsEnabled = false;
+                    levels = dt_level.Select("levelid > '1'");
+                    ComboboxTool.InitComboboxSource(_level, levels, "lr");
+                    break;
+                case "2": _lower_provice.Text = GetName(department.Row["province"].ToString());
+                    _lower_provice.IsEnabled = false;
+                    levels = dt_level.Select("levelid > '2'");
+                    ComboboxTool.InitComboboxSource(_level, levels, "lr");
+                    break;
+                case "3": _lower_provice.Text = GetName(department.Row["province"].ToString());
+                    _lower_provice.IsEnabled = false;
+                    levels = dt_level.Select("levelid = '4'");
+                    ComboboxTool.InitComboboxSource(_level, levels, "lr");
+                    _level.SelectedIndex = 1;
+                    break;
+                default: break;
+            }
+            _lower_country.Items.Clear();
+
             _station_flag.Text = "(必填)";
             _level_flag.Text = "(必填)";
             
@@ -741,38 +826,7 @@ namespace FoodSafetyMonitoring.Manager
             _contact_number.Text = "";
             _address.Text = "";
 
-            Department department = _add.Tag as Department;
-
-            DataRow[] levels;
-            switch (department.Row["FLAG_TIER"].ToString())
-            {
-                case "0": _lower_provice.IsEnabled = true;
-                    _lower_provice.SelectedIndex = 0;
-                    levels = dt_level.Select("levelid = '1'");
-                    ComboboxTool.InitComboboxSource(_level, levels, "lr");
-                    _level.SelectedIndex = 1;
-                    break;
-                case "1": _lower_provice.Text = GetName(department.Row["province"].ToString());
-                    _lower_provice.IsEnabled = false;
-                    levels = dt_level.Select("levelid > '1'");
-                    ComboboxTool.InitComboboxSource(_level, levels, "lr");
-                    break;
-                case "2": _lower_provice.Text = GetName(department.Row["province"].ToString());
-                    _lower_provice.IsEnabled = false;
-                    levels = dt_level.Select("levelid > '2'");
-                    ComboboxTool.InitComboboxSource(_level, levels, "lr");
-                    break;
-                case "3": _lower_provice.Text = GetName(department.Row["province"].ToString());
-                    _lower_provice.IsEnabled = false;
-                    levels = dt_level.Select("levelid = '4'");
-                    ComboboxTool.InitComboboxSource(_level, levels, "lr");
-                    _level.SelectedIndex = 1;
-                    break;
-                default: break;
-            }
-            _lower_city.ItemsSource = null;
-            _lower_country.ItemsSource = null;
-
+            
         }
 
         private void _import_Click(object sender, RoutedEventArgs e)
