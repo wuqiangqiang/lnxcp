@@ -49,7 +49,7 @@ namespace FoodSafetyMonitoring.Manager
         private void getdata()
         {
             MyColumns.Add("part_id", new MyColumn("part_id", "部门id") { BShow = false });
-            MyColumns.Add("part_name", new MyColumn("part_name", "区县名称") { BShow = true, Width = 16 });
+            MyColumns.Add("part_name", new MyColumn("part_name", "部门名称") { BShow = true, Width = 16 });
             switch (CerType)
             {
                 case "": MyColumns.Add("animal", new MyColumn("animal", "动物证") { BShow = true, Width = 10 });
@@ -94,11 +94,13 @@ namespace FoodSafetyMonitoring.Manager
         void _tableview_DetailsRowEnvent(string id)
         {
             string dept_id;
+            string flag_tier;
 
             DataRow[] rows = currenttable.Select("PART_NAME = '" + id + "'");
             dept_id = rows[0]["PART_ID"].ToString();
+            flag_tier = rows[0]["flagtier"].ToString();
 
-            if (user_flag_tier == "2")
+            if (flag_tier == "4")
             {
                 UcCertificateMonthReportDetails daydetails = new UcCertificateMonthReportDetails(dbOperation, Sj, dept_id, CerType);
                 daydetails.SetValue(Grid.RowProperty, 0);
@@ -108,7 +110,7 @@ namespace FoodSafetyMonitoring.Manager
             }
             else
             {
-                UcCertificateMonthReportDept daydetails = new UcCertificateMonthReportDept(dbOperation, Sj, dept_id, CerType);
+                UcCertificateMonthReportCountry daydetails = new UcCertificateMonthReportCountry(dbOperation, Sj, dept_id, CerType);
                 daydetails.SetValue(Grid.RowProperty, 0);
                 daydetails.SetValue(Grid.RowSpanProperty, 2);
 

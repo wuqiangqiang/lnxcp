@@ -329,7 +329,4 @@ namespace FoodSafetyMonitoring.Manager.UserControls
 
 
     }
-
-
-
 }

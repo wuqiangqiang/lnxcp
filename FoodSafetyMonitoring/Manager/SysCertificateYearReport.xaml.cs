@@ -46,25 +46,25 @@ namespace FoodSafetyMonitoring.Manager
             dtpStartDate.SelectedDate = DateTime.Now.AddDays(-1);
             dtpEndDate.SelectedDate = DateTime.Now;
 
-            switch (user_flag_tier)
-            {
-                case "0": _dept_name.Text = "选择省:";
-                    dept_name = "省名称";
-                    break;
-                case "1": _dept_name.Text = "选择市(州):";
-                    dept_name = "市(州)单位名称";
-                    break;
-                case "2": _dept_name.Text = "选择区县:";
-                    dept_name = "区县名称";
-                    break;
-                case "3": _dept_name.Text = "选择检测单位:";
-                    dept_name = "检测单位名称";
-                    break;
-                case "4": _dept_name.Text = "选择检测单位:";
-                    dept_name = "检测单位名称";
-                    break;
-                default: break;
-            }
+            //switch (user_flag_tier)
+            //{
+            //    case "0": _dept_name.Text = "选择省:";
+            //        dept_name = "省名称";
+            //        break;
+            //    case "1": _dept_name.Text = "选择市(州):";
+            //        dept_name = "市(州)单位名称";
+            //        break;
+            //    case "2": _dept_name.Text = "选择区县:";
+            //        dept_name = "区县名称";
+            //        break;
+            //    case "3": _dept_name.Text = "选择检测单位:";
+            //        dept_name = "检测单位名称";
+            //        break;
+            //    case "4": _dept_name.Text = "选择检测单位:";
+            //        dept_name = "检测单位名称";
+            //        break;
+            //    default: break;
+            //}
 
             //检测单位
             ComboboxTool.InitComboboxSource(_detect_dept, "call p_dept_cxtj(" + user_id + ")", "cxtj");
@@ -102,7 +102,7 @@ namespace FoodSafetyMonitoring.Manager
             grid_info.Children.Add(_tableview);
             MyColumns.Clear();
             MyColumns.Add("part_id", new MyColumn("part_id", "部门id") { BShow = false });
-            MyColumns.Add("part_name", new MyColumn("part_name", dept_name) { BShow = true, Width = 16 });
+            MyColumns.Add("part_name", new MyColumn("part_name", "部门名称") { BShow = true, Width = 16 });
             switch (cer_type)
             {
                 case "": MyColumns.Add("animal", new MyColumn("animal", "动物证") { BShow = true, Width = 10 });
@@ -148,17 +148,15 @@ namespace FoodSafetyMonitoring.Manager
         void _tableview_DetailsRowEnvent(string id)
         {
             string dept_id;
+            string flag_tier;
 
             DataRow[] rows = currenttable.Select("PART_NAME = '" + id + "'");
             dept_id = rows[0]["PART_ID"].ToString();
+            flag_tier = rows[0]["flagtier"].ToString();
 
-            if (user_flag_tier == "3" || user_flag_tier == "4")
+            if (flag_tier == "4")
             {
                 grid_info.Children.Add(new UcCertificateYearReportDetails(dbOperation, report_kssj.ToString(), report_jssj.ToString(), dept_id, cer_type));
-            }
-            else if (user_flag_tier == "2")
-            {
-                grid_info.Children.Add(new UcCertificateYearReportDept(dbOperation, report_kssj.ToString(), report_jssj.ToString(), dept_id, cer_type));
             }
             else
             {

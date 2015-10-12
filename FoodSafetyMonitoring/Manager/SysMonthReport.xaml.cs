@@ -70,21 +70,21 @@ namespace FoodSafetyMonitoring.Manager
             _month.ItemsSource = month;
             _month.SelectedIndex = 8;
 
-            //检测单位
-            switch (user_flag_tier)
-            {
-                case "0": _dept_name.Text = "选择省:";
-                    break;
-                case "1": _dept_name.Text = "选择市(州):";
-                    break;
-                case "2": _dept_name.Text = "选择区县:";
-                    break;
-                case "3": _dept_name.Text = "选择检测单位:";
-                    break;
-                case "4": _dept_name.Text = "选择检测单位:";
-                    break;
-                default: break;
-            }
+            ////检测单位
+            //switch (user_flag_tier)
+            //{
+            //    case "0": _dept_name.Text = "选择省:";
+            //        break;
+            //    case "1": _dept_name.Text = "选择市(州):";
+            //        break;
+            //    case "2": _dept_name.Text = "选择区县:";
+            //        break;
+            //    case "3": _dept_name.Text = "选择检测单位:";
+            //        break;
+            //    case "4": _dept_name.Text = "选择检测单位:";
+            //        break;
+            //    default: break;
+            //}
 
             ComboboxTool.InitComboboxSource(_detect_dept, "call p_dept_cxtj(" + (Application.Current.Resources["User"] as UserInfo).ID + ")", "cxtj");
             //检测项目
@@ -162,25 +162,27 @@ namespace FoodSafetyMonitoring.Manager
             //表中第一行第一列交叉处一般显示为第1列标题
             tabledisplay.Columns.Add(new DataColumn("序号"));
             MyColumns.Add("序号", new MyColumn("序号", "序号") { BShow = true, Width = 5 });
-            switch (user_flag_tier)
-            {
-                case "0": tabledisplay.Columns.Add(new DataColumn("省名称"));
-                    MyColumns.Add("省名称", new MyColumn("省名称", "省名称") { BShow = true, Width = 16 });
-                    break;
-                case "1": tabledisplay.Columns.Add(new DataColumn("市(州)单位名称"));
-                    MyColumns.Add("市(州)单位名称", new MyColumn("市(州)单位名称", "市(州)单位名称") { BShow = true, Width = 16 });
-                    break;
-                case "2": tabledisplay.Columns.Add(new DataColumn("区县名称"));
-                    MyColumns.Add("区县名称", new MyColumn("区县名称", "区县名称") { BShow = true, Width = 16 });
-                    break;
-                case "3": tabledisplay.Columns.Add(new DataColumn("检测单位名称"));
-                    MyColumns.Add("检测单位名称", new MyColumn("检测单位名称", "检测单位名称") { BShow = true, Width = 16 });
-                    break;
-                case "4": tabledisplay.Columns.Add(new DataColumn("检测单位名称"));
-                    MyColumns.Add("检测单位名称", new MyColumn("检测单位名称", "检测单位名称") { BShow = true, Width = 16 });
-                    break;
-                default: break;
-            }
+            //switch (user_flag_tier)
+            //{
+            //    case "0": tabledisplay.Columns.Add(new DataColumn("省名称"));
+            //        MyColumns.Add("省名称", new MyColumn("省名称", "省名称") { BShow = true, Width = 16 });
+            //        break;
+            //    case "1": tabledisplay.Columns.Add(new DataColumn("市(州)单位名称"));
+            //        MyColumns.Add("市(州)单位名称", new MyColumn("市(州)单位名称", "市(州)单位名称") { BShow = true, Width = 16 });
+            //        break;
+            //    case "2": tabledisplay.Columns.Add(new DataColumn("区县名称"));
+            //        MyColumns.Add("区县名称", new MyColumn("区县名称", "区县名称") { BShow = true, Width = 16 });
+            //        break;
+            //    case "3": tabledisplay.Columns.Add(new DataColumn("检测单位名称"));
+            //        MyColumns.Add("检测单位名称", new MyColumn("检测单位名称", "检测单位名称") { BShow = true, Width = 16 });
+            //        break;
+            //    case "4": tabledisplay.Columns.Add(new DataColumn("检测单位名称"));
+            //        MyColumns.Add("检测单位名称", new MyColumn("检测单位名称", "检测单位名称") { BShow = true, Width = 16 });
+            //        break;
+            //    default: break;
+            //}
+            tabledisplay.Columns.Add(new DataColumn("部门名称"));
+            MyColumns.Add("部门名称", new MyColumn("部门名称", "部门名称") { BShow = true, Width = 16 });
 
             //表中后面每列的标题其实是列分组的关键字
             for (int i = 0; i < ItemNames.Length; i++)
@@ -301,17 +303,15 @@ namespace FoodSafetyMonitoring.Manager
         void _tableview_DetailsRowEnvent(string id)
         {
             string dept_id;
+            string flag_tier;
 
             DataRow[] rows = currenttable.Select("PART_NAME = '" + id + "'");
             dept_id = rows[0]["PART_ID"].ToString();
+            flag_tier = rows[0]["flagtier"].ToString();
 
-            if (user_flag_tier == "3" || user_flag_tier == "4")
+            if (flag_tier == "4")
             {
                 grid_info.Children.Add(new UcMonthReportDetails(dbOperation, _year.Text + "-" + _month.Text, dept_id, item_id, result_id));
-            }
-            else if (user_flag_tier == "2")
-            {
-                grid_info.Children.Add(new UcMonthReportDept(dbOperation, _year.Text + "-" + _month.Text, dept_id, item_id, result_id));
             }
             else
             {
