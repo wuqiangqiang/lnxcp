@@ -40,26 +40,26 @@ namespace FoodSafetyMonitoring.Manager
             ////初始化查询条件
             //reportDate_kssj.SelectedDate = DateTime.Now.AddDays(-1);
             //reportDate_jssj.SelectedDate = DateTime.Now;
-            //检测单位
-            switch (user_flag_tier)
-            {
-                case "0": //_dept_name.Text = "省:";
-                    dept_name = "省名称";
-                    break;
-                case "1": //_dept_name.Text = "市(州):";
-                    dept_name = "市(州)单位名称";
-                    break;
-                case "2": //_dept_name.Text = "区县:";
-                    dept_name = "区县名称";
-                    break;
-                case "3": //_dept_name.Text = "检测单位:";
-                    dept_name = "检测单位名称";
-                    break;
-                case "4": //_dept_name.Text = "检测单位:";
-                    dept_name = "检测单位名称";
-                    break;
-                default: break;
-            }
+            ////检测单位
+            //switch (user_flag_tier)
+            //{
+            //    case "0": //_dept_name.Text = "省:";
+            //        dept_name = "省名称";
+            //        break;
+            //    case "1": //_dept_name.Text = "市(州):";
+            //        dept_name = "市(州)单位名称";
+            //        break;
+            //    case "2": //_dept_name.Text = "区县:";
+            //        dept_name = "区县名称";
+            //        break;
+            //    case "3": //_dept_name.Text = "检测单位:";
+            //        dept_name = "检测单位名称";
+            //        break;
+            //    case "4": //_dept_name.Text = "检测单位:";
+            //        dept_name = "检测单位名称";
+            //        break;
+            //    default: break;
+            //}
             //ComboboxTool.InitComboboxSource(_detect_dept, "call p_dept_cxtj(" + (Application.Current.Resources["User"] as UserInfo).ID + ")", "cxtj");
             ////检测项目
             //ComboboxTool.InitComboboxSource(_detect_item, "SELECT ItemID,ItemNAME FROM t_det_item WHERE  (tradeId ='1'or tradeId ='2' or tradeId ='3' or ifnull(tradeId,'') = '') and OPENFLAG = '1' order by orderId", "cxtj");
@@ -72,7 +72,7 @@ namespace FoodSafetyMonitoring.Manager
             //MyColumns.Add("districtid", new MyColumn("districtid", "区id") { BShow = false });
             //MyColumns.Add("districtname", new MyColumn("districtname", "区县") { BShow = true,Width = 10 });
             MyColumns.Add("partid", new MyColumn("partid", "检测单位id") { BShow = false });
-            MyColumns.Add("partname", new MyColumn("partname", dept_name) { BShow = true, Width = 18 });
+            MyColumns.Add("partname", new MyColumn("partname", "部门名称") { BShow = true, Width = 18 });
             MyColumns.Add("itemid", new MyColumn("itemid", "检测项目id") { BShow = false });
             MyColumns.Add("itemname", new MyColumn("itemname", "检测项目") { BShow = true, Width = 14 });
             MyColumns.Add("objectid", new MyColumn("objectid", "检测对象id") { BShow = false });
@@ -157,20 +157,18 @@ namespace FoodSafetyMonitoring.Manager
             string dept_id;
             string item_id;
             string object_id;
+            string flag_tier;
 
             int selectrow = int.Parse(id);
 
             dept_id = current_table.Rows[selectrow - 1][1].ToString();
             item_id = current_table.Rows[selectrow - 1][3].ToString();
             object_id = current_table.Rows[selectrow - 1][5].ToString();
+            flag_tier = current_table.Rows[selectrow - 1][12].ToString();
 
-            if (user_flag_tier == "3" || user_flag_tier == "4")
+            if (flag_tier == "4")
             {
                 grid_info.Children.Add(new UcWarningdetails(dbOperation, dept_id, item_id, object_id));
-            }
-            else if (user_flag_tier == "2")
-            {
-                grid_info.Children.Add(new UcWarningDept(dbOperation, dept_id, item_id, object_id));
             }
             else
             {

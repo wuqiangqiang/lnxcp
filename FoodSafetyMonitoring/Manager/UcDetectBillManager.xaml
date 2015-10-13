@@ -61,6 +61,8 @@
                         <TextBlock Width="70" >耳标号:</TextBlock>
                         <TextBox Width="130" Margin="0" x:Name="_object_label" MaxLength="15" InputMethod.IsInputMethodEnabled="False" DataObject.Pasting="Object_Lable_Pasting" PreviewKeyDown="Object_Lable_PreviewKeyDown"  PreviewTextInput="Object_Lable_PreviewTextInput"></TextBox>
                         <Button Margin="20,0,0,0" Content="生成耳标号" Width="100" Name="btnGo"   VerticalAlignment="Center" Click="btnget_Click" />
+                        <TextBlock Width="60" Margin="123,0,10,0">样品环节:</TextBlock>
+                        <ComboBox  Width="85" x:Name="_detect_huanjie"></ComboBox>
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="4">

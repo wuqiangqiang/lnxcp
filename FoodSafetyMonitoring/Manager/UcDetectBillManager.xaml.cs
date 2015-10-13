@@ -16,6 +16,7 @@ using System.Data;
 using FoodSafetyMonitoring.Common;
 using Toolkit = Microsoft.Windows.Controls;
 using DBUtility;
+
 using FoodSafetyMonitoring.Manager.UserControls;
 
 namespace FoodSafetyMonitoring.Manager
@@ -85,6 +86,7 @@ namespace FoodSafetyMonitoring.Manager
             _detect_item.SelectionChanged += new SelectionChangedEventHandler(_detect_item_SelectionChanged);
             ComboboxTool.InitComboboxSource(_detect_result, "SELECT resultId,resultName FROM t_det_result where openFlag = '1' ORDER BY id", "lr");
             ComboboxTool.InitComboboxSource(_card_brand, "SELECT cardbrandid,cardbrandname FROM t_cardbrand where openFlag = '1'", "lr");
+            ComboboxTool.InitComboboxSource(_detect_huanjie, "SELECT id,name FROM t_liaoning_huanjie", "lr");
             _entering_datetime.Text = string.Format("{0:g}", System.DateTime.Now);
             _source_company.SelectionChanged += new SelectionChangedEventHandler(_source_company_SelectionChanged);
             _detect_person.Text = (Application.Current.Resources["User"] as UserInfo).ShowName;
@@ -102,6 +104,7 @@ namespace FoodSafetyMonitoring.Manager
             //this._object_count.Text = "";
             //this._object_label.Text = "";
             //this._detect_trade.SelectedIndex = 1;
+            this._detect_huanjie.SelectedIndex = 0;
             this._detect_item.SelectedIndex = 0;
             this._detect_method1.IsChecked = false;
             this._detect_method2.IsChecked = false;
@@ -147,6 +150,10 @@ namespace FoodSafetyMonitoring.Manager
             else if (_object_label.Text.Trim().Length != 15)
             {
                 msg = "*耳标号必须为15位";
+            }
+            else if (_detect_huanjie.SelectedIndex < 1)
+            {
+                msg = "*请选择样品环节";
             }
             else if (_detect_item.SelectedIndex < 1)
             {
@@ -208,7 +215,7 @@ namespace FoodSafetyMonitoring.Manager
                     company_id = dbOperation.GetSingle(string.Format("SELECT COMPANYID from t_company where COMPANYNAME ='{0}' and deptid = '{1}'", _source_company.Text, (Application.Current.Resources["User"] as UserInfo).DepartmentID)).ToString();
                 }
 
-                string sql = string.Format("call p_insert_detect_new_new('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}')"
+                string sql = string.Format("call p_insert_detect_new_new('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}')"
                               , company_id,
                               _detect_number.Text,
                               (_detect_item.SelectedItem as Label).Tag.ToString(),
@@ -220,7 +227,8 @@ namespace FoodSafetyMonitoring.Manager
                               (Application.Current.Resources["User"] as UserInfo).DepartmentID,
                               (Application.Current.Resources["User"] as UserInfo).ID,
                               System.DateTime.Now,_object_count.Text,_object_label.Text,
-                               (_card_brand.SelectedItem as Label).Tag.ToString());
+                               (_card_brand.SelectedItem as Label).Tag.ToString(),
+                               (_detect_huanjie.SelectedItem as Label).Tag.ToString());
 
 
                 int i = dbOperation.ExecuteSql(sql);
@@ -250,6 +258,7 @@ namespace FoodSafetyMonitoring.Manager
             this._detect_number.Text = "";
             this._object_count.Text = "";
             this._object_label.Text = "";
+            this._detect_huanjie.SelectedIndex = 0;
             this._detect_item.SelectedIndex = 0;
             this._detect_method1.IsChecked = false;
             this._detect_method2.IsChecked = false;

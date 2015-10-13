@@ -43,7 +43,7 @@ namespace FoodSafetyMonitoring.Manager
 
             MyColumns.Add("zj", new MyColumn("zj", "主键") { BShow = false });
             MyColumns.Add("partid", new MyColumn("partid", "检测单位id") { BShow = false });
-            MyColumns.Add("partname", new MyColumn("partname", "区县名称") { BShow = true, Width = 18 });
+            MyColumns.Add("partname", new MyColumn("partname", "部门名称") { BShow = true, Width = 18 });
             MyColumns.Add("itemid", new MyColumn("itemid", "检测项目id") { BShow = false });
             MyColumns.Add("itemname", new MyColumn("itemname", "检测项目") { BShow = true, Width = 14 });
             MyColumns.Add("objectid", new MyColumn("objectid", "检测对象id") { BShow = false });
@@ -82,14 +82,16 @@ namespace FoodSafetyMonitoring.Manager
             string dept_id;
             //string item_id;
             //string object_id;
+            string flag_tier;
 
             int selectrow = int.Parse(id);
 
             dept_id = current_table.Rows[selectrow - 1][1].ToString();
             //item_id = current_table.Rows[selectrow - 1][3].ToString();
             //object_id = current_table.Rows[selectrow - 1][5].ToString();
+            flag_tier = current_table.Rows[selectrow - 1][11].ToString();
 
-            if (user_flag_tier == "2")
+            if (flag_tier == "4")
             {
                 UcWarningdetails daydetails = new UcWarningdetails(dbOperation, dept_id, ItemId, ObjectId);
                 daydetails.SetValue(Grid.RowProperty, 0);
@@ -99,7 +101,7 @@ namespace FoodSafetyMonitoring.Manager
             }
             else
             {
-                UcWarningDept daydetails = new UcWarningDept(dbOperation, dept_id, ItemId, ObjectId);
+                UcWarningCountry daydetails = new UcWarningCountry(dbOperation, dept_id, ItemId, ObjectId);
                 daydetails.SetValue(Grid.RowProperty, 0);
                 daydetails.SetValue(Grid.RowSpanProperty, 2);
 

@@ -24,6 +24,7 @@ namespace FoodSafetyMonitoring.Manager
     {
         private IDBOperation dbOperation;
         private string user_flag_tier;
+        private DataTable current_table;
         private Dictionary<string, MyColumn> MyColumns = new Dictionary<string, MyColumn>();
         public string Kssj { get; set; }
         public string Jssj { get; set; }
@@ -45,7 +46,7 @@ namespace FoodSafetyMonitoring.Manager
 
             MyColumns.Add("zj", new MyColumn("zj", "序号") { BShow = false, Width = 5 });
             MyColumns.Add("partid", new MyColumn("partid", "检测单位id") { BShow = false });
-            MyColumns.Add("partname", new MyColumn("partname", "区县名称") { BShow = true, Width = 18 });
+            MyColumns.Add("partname", new MyColumn("partname", "部门名称") { BShow = true, Width = 18 });
             MyColumns.Add("yang", new MyColumn("yang", "阳性预警数") { BShow = true, Width = 12 });
             MyColumns.Add("yang_like", new MyColumn("yang_like", "疑似阳性预警数") { BShow = true, Width = 14 });
             MyColumns.Add("count", new MyColumn("count", "预警数合计") { BShow = true, Width = 12 });
@@ -77,7 +78,9 @@ namespace FoodSafetyMonitoring.Manager
             DataTable table = dbOperation.GetDbHelper().GetDataSet(string.Format("call p_warning_report_country('{0}','{1}','{2}','{3}','{4}')",
                                Kssj, Jssj, DeptId, ItemId, ReviewFlag)).Tables[0];
 
+            current_table = table;
             _tableview.Table = table;
+            
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -88,10 +91,13 @@ namespace FoodSafetyMonitoring.Manager
         void _tableview_DetailsRowEnvent(string id)
         {
             string dept_id;
+            string flag_tier;
 
             dept_id = id;
+            DataRow[] rows = current_table.Select("PartId = '" + id + "'");
+            flag_tier = rows[0]["flagtier"].ToString();
 
-            if (user_flag_tier == "2")
+            if (flag_tier == "4")
             {
                 UcWarningReportDetails daydetails = new UcWarningReportDetails(dbOperation, Kssj, Jssj, dept_id, ItemId, ReviewFlag);
                 daydetails.SetValue(Grid.RowProperty, 0);
@@ -101,7 +107,7 @@ namespace FoodSafetyMonitoring.Manager
             }
             else
             {
-                UcWarningReportDept daydetails = new UcWarningReportDept(dbOperation, Kssj, Jssj, dept_id, ItemId, ReviewFlag);
+                UcWarningReportCountry daydetails = new UcWarningReportCountry(dbOperation, Kssj, Jssj, dept_id, ItemId, ReviewFlag);
                 daydetails.SetValue(Grid.RowProperty, 0);
                 daydetails.SetValue(Grid.RowSpanProperty, 2);
 

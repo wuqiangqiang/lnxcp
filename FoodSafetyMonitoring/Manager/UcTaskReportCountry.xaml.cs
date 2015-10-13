@@ -78,8 +78,8 @@ namespace FoodSafetyMonitoring.Manager
             //表中第一行第一列交叉处一般显示为第1列标题
             tabledisplay.Columns.Add(new DataColumn("序号"));
             MyColumns.Add("序号", new MyColumn("序号", "序号") { BShow = true, Width = 5 });
-            tabledisplay.Columns.Add(new DataColumn("区县名称"));
-            MyColumns.Add("区县名称", new MyColumn("区县名称", "区县名称") { BShow = true, Width = 16 });
+            tabledisplay.Columns.Add(new DataColumn("部门名称"));
+            MyColumns.Add("部门名称", new MyColumn("部门名称", "部门名称") { BShow = true, Width = 16 });
                    
 
             //表中后面每列的标题其实是列分组的关键字
@@ -168,11 +168,13 @@ namespace FoodSafetyMonitoring.Manager
         void _tableview_DetailsRowEnvent(string id)
         {
             string dept_id;
+            string flag_tier;
 
             DataRow[] rows = currenttable.Select("PART_NAME = '" + id + "'");
             dept_id = rows[0]["PART_ID"].ToString();
+            flag_tier = rows[0]["flagtier"].ToString();
 
-            if (user_flag_tier == "2")
+            if (flag_tier == "4")
             {
                 UcTaskReportDetails daydetails = new UcTaskReportDetails(dbOperation, Sj, dept_id, ItemId);
                 daydetails.SetValue(Grid.RowProperty, 0);
@@ -182,7 +184,7 @@ namespace FoodSafetyMonitoring.Manager
             }
             else
             {
-                UcTaskReportDept daydetails = new UcTaskReportDept(dbOperation, Sj, dept_id, ItemId);
+                UcTaskReportCountry daydetails = new UcTaskReportCountry(dbOperation, Sj, dept_id, ItemId);
                 daydetails.SetValue(Grid.RowProperty, 0);
                 daydetails.SetValue(Grid.RowSpanProperty, 2);
 
