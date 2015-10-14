@@ -49,7 +49,8 @@ namespace FoodSafetyMonitoring.Manager
             ComboboxTool.InitComboboxSource(_detect_method, "select reagentId,reagentName from t_det_reagent where openFlag = '1'", "cxtj");
             ComboboxTool.InitComboboxSource(_detect_type, "SELECT sourceId,sourceName FROM t_det_source where openFlag = '1'", "cxtj");
             //ComboboxTool.InitComboboxSource(_dept_type, "SELECT typeId,typeName FROM t_dept_type where openFlag = '1'", "cxtj");
-            ComboboxTool.InitComboboxSource(_card_brand, "SELECT cardbrandid,cardbrandname FROM t_cardbrand where openFlag = '1'", "lr");
+            ComboboxTool.InitComboboxSource(_card_brand, "SELECT cardbrandid,cardbrandname FROM t_cardbrand where openFlag = '1'", "cxtj");
+            ComboboxTool.InitComboboxSource(_detect_huanjie, "SELECT id,name FROM t_liaoning_huanjie", "cxtj");
 
             ComboboxTool.InitComboboxSource(_province1, rows, "cxtj");
             _province1.SelectionChanged += new SelectionChangedEventHandler(_province1_SelectionChanged);
@@ -177,7 +178,7 @@ namespace FoodSafetyMonitoring.Manager
 
         private void GetData()
         {
-           DataTable table = dbOperation.GetDbHelper().GetDataSet(string.Format("call p_query_detect_new({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}',{15},{16})",
+            DataTable table = dbOperation.GetDbHelper().GetDataSet(string.Format("call p_query_detect_new({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}',{16},{17})",
                   (Application.Current.Resources["User"] as UserInfo).ID,
                 //dtpStartDate.Value.ToString() == dtpEndDate.Value.ToString() ? "" : dtpStartDate.Value.ToString(),
                 //dtpStartDate.Value.ToString() == dtpEndDate.Value.ToString() ? "" : dtpEndDate.Value.ToString(),
@@ -195,6 +196,7 @@ namespace FoodSafetyMonitoring.Manager
                   _detect_person1.SelectedIndex < 1 ? "" : (_detect_person1.SelectedItem as Label).Tag,
                   _detect_type.SelectedIndex < 1 ? "" : (_detect_type.SelectedItem as Label).Tag,
                   _card_brand.SelectedIndex < 1 ? "" : (_card_brand.SelectedItem as Label).Tag,
+                  _detect_huanjie.SelectedIndex < 1 ? "" : (_detect_huanjie.SelectedItem as Label).Tag,
                   (_tableview.PageIndex - 1) * _tableview.RowMax,
                   _tableview.RowMax)).Tables[0];
 

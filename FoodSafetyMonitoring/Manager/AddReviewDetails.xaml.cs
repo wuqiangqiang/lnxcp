@@ -68,6 +68,7 @@ namespace FoodSafetyMonitoring.Manager
             _detectTypeName.Text = table.Rows[0][0].ToString();
             _cardbrand.Text = table.Rows[0][23].ToString();
             _cardno.Text = table.Rows[0][24].ToString();
+            _detecthuanjie.Text = table.Rows[0][26].ToString();
 
             //检测结果为疑似阳性变红
             if (_resultName.Text == "疑似阳性" || _resultName.Text == "确证阳性")
@@ -139,6 +140,8 @@ namespace FoodSafetyMonitoring.Manager
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            txtMsg.Text = "";
+
             if (chk_1.IsChecked == false && chk_2.IsChecked == false)
             {
                 txtMsg.Text = "*请选择原因";

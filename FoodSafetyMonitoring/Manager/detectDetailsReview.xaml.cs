@@ -70,6 +70,7 @@ namespace FoodSafetyMonitoring.Manager
             _reviewResult_text.Text = table.Rows[0][16].ToString();
             _reviewDate.Text = table.Rows[0][17].ToString();
             _cardno.Text = table.Rows[0][24].ToString();
+            _detecthuanjie.Text = table.Rows[0][26].ToString();
 
             //检测结果为疑似阳性变红
             if (_resultName.Text == "疑似阳性" || _resultName.Text == "确证阳性")

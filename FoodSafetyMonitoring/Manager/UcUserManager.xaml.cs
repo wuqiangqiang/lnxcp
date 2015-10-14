@@ -80,14 +80,7 @@ namespace FoodSafetyMonitoring.Manager
                 department.Row = rows[0];
                 //对应湖北省级有3个部门（101 湖北畜安处，102 湖北动监处，103 湖北屠宰办），数据库中存在下级部门的是102
                 string deptId = "";
-                if (rows[0]["INFO_CODE"].ToString() == "101" || rows[0]["INFO_CODE"].ToString() == "103")
-                {
-                    deptId = "102";
-                }
-                else
-                {
-                    deptId = rows[0]["INFO_CODE"].ToString();
-                }
+                deptId = rows[0]["INFO_CODE"].ToString();
                 rows = table.Select("FK_CODE_DEPT='" + deptId + "'", " orderid asc");
                 foreach (DataRow row1 in rows)
                 {
@@ -97,14 +90,7 @@ namespace FoodSafetyMonitoring.Manager
                     department1.Name = row1["INFO_NAME"].ToString();
                     //对应湖北省级有3个部门（101 湖北畜安处，102 湖北动监处，103 湖北屠宰办），数据库中存在下级部门的是102
                     string deptId2 = "";
-                    if (row1["INFO_CODE"].ToString() == "101" || row1["INFO_CODE"].ToString() == "103")
-                    {
-                        deptId2 = "102";
-                    }
-                    else
-                    {
-                        deptId2 = row1["INFO_CODE"].ToString();
-                    }
+                    deptId2 = row1["INFO_CODE"].ToString();
                     rows = table.Select("FK_CODE_DEPT='" + deptId2 + "'", " orderid asc");
                     foreach (DataRow row2 in rows)
                     {
@@ -182,25 +168,8 @@ namespace FoodSafetyMonitoring.Manager
         {
             if (_department.SelectedIndex > 0)
             {
-                switch (dept_flag)
-                {
-                    case "0": _cmbRoleType.IsEnabled = true;
-                        ComboboxTool.InitComboboxSource(_cmbRoleType, "SELECT NUMB_ROLE,INFO_NAME FROM sys_client_role where NUMB_ROLE =1", "lr");
-                        break;
-                    case "1": _cmbRoleType.IsEnabled = true;
-                        ComboboxTool.InitComboboxSource(_cmbRoleType, "SELECT NUMB_ROLE,INFO_NAME FROM sys_client_role where NUMB_ROLE = 79", "lr");
-                        break;
-                    case "2": _cmbRoleType.IsEnabled = true;
-                        ComboboxTool.InitComboboxSource(_cmbRoleType, "SELECT NUMB_ROLE,INFO_NAME FROM sys_client_role where NUMB_ROLE = 76", "lr");
-                        break;
-                    case "3": _cmbRoleType.IsEnabled = true;
-                        ComboboxTool.InitComboboxSource(_cmbRoleType, "SELECT NUMB_ROLE,INFO_NAME FROM sys_client_role where NUMB_ROLE = 77 or NUMB_ROLE = 80", "lr");
-                        break;
-                    case "4": _cmbRoleType.IsEnabled = true;
-                        ComboboxTool.InitComboboxSource(_cmbRoleType, "SELECT NUMB_ROLE,INFO_NAME FROM sys_client_role where NUMB_ROLE = 60 or NUMB_ROLE = 50 or NUMB_ROLE = 51", "lr");
-                        break;
-                    default: break;
-                }
+                _cmbRoleType.IsEnabled = true;
+                ComboboxTool.InitComboboxSource(_cmbRoleType, string.Format("SELECT NUMB_ROLE,INFO_NAME FROM sys_client_role where FLAG_TIER ='{0}'", dept_flag), "lr");
                 _cmbRoleType.SelectionChanged += new SelectionChangedEventHandler(_cmbRoleType_SelectionChanged);
             }
         }

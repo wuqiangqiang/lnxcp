@@ -68,7 +68,7 @@ namespace FoodSafetyMonitoring.Manager
             _year.SelectedIndex = 5;
 
             _month.ItemsSource = month;
-            _month.SelectedIndex = 8;
+            _month.SelectedIndex = 9;
 
             ////检测单位
             //switch (user_flag_tier)

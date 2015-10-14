@@ -82,6 +82,7 @@ namespace FoodSafetyMonitoring.Manager
             MyColumns.Add("count", new MyColumn("count", "合计数量") { BShow = true, Width = 12 });
             MyColumns.Add("yang_like_sum", new MyColumn("yang_like_sum", "疑似阳性合计") { BShow = false });
             MyColumns.Add("sum_num", new MyColumn("sum_num", "总行数") { BShow = false });
+            MyColumns.Add("flagtier", new MyColumn("flagtier", "部门级别") { BShow = false });
 
             _tableview.MyColumns = MyColumns;
             _tableview.BShowDetails = true;

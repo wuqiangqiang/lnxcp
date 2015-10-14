@@ -281,15 +281,15 @@ namespace FoodSafetyMonitoring.Manager
                     }
                 }
 
-                row["Province"] = (_lower_provice.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
-                row["City"] = (_lower_city.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
+                row["Province"] = _lower_provice.SelectedIndex < 1 ? "" : (_lower_provice.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
+                row["City"] = _lower_city.SelectedIndex < 1 ? "" : (_lower_city.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
                 if(_lower_country.Items.Count <= 0)
                 {
                     row["Country"] = "";
                 }
                 else
                 {
-                    row["Country"] = (_lower_country.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
+                    row["Country"] = _lower_country.SelectedIndex < 1 ? "" : (_lower_country.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
                 }
                 
                 row["INFO_NAME"] = _station.Text;
@@ -407,8 +407,8 @@ namespace FoodSafetyMonitoring.Manager
                     type = "3";
                 }
 
-                string Province = (_lower_provice.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
-                string City = (_lower_city.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
+                string Province = _lower_provice.SelectedIndex < 1 ? "" : (_lower_provice.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
+                string City = _lower_city.SelectedIndex < 1 ? "" : (_lower_city.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
                 string Country = "";
                 if (_lower_country.Items.Count <= 0)
                 {
@@ -416,7 +416,7 @@ namespace FoodSafetyMonitoring.Manager
                 }
                 else
                 {
-                    Country = (_lower_country.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
+                    Country = _lower_country.SelectedIndex < 1 ? "" : (_lower_country.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
                 }
 
                 string sql = String.Format("UPDATE sys_client_sysdept set INFO_NAME='{0}',ADDRESS='{1}',CONTACTER='{2}',TEL='{3}',PHONE='{4}',TYPE='{5}',supplierId = '{6}',"+
