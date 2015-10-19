@@ -144,7 +144,7 @@ namespace FoodSafetyMonitoring
 
                 this._logo.Visibility = Visibility.Visible;
                 this._title_1.Visibility = Visibility.Visible;
-                this._title_2.Visibility = Visibility.Visible;
+                //this._title_2.Visibility = Visibility.Visible;
 
                 //加载父菜单和子菜单和首页
                 MainMenu_Load();

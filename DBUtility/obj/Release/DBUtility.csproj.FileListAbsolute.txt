@@ -16,3 +16,8 @@ D:\湖北老平台新版本连正式库\easyfood\DBUtility\bin\Release\MySql.Dat
 D:\湖北老平台新版本连正式库\easyfood\DBUtility\obj\Release\DBUtility.dll
 D:\湖北老平台新版本连正式库\easyfood\DBUtility\obj\Release\DBUtility.pdb
 D:\湖北老平台新版本连正式库\easyfood\DBUtility\obj\Release\DBUtility.csprojResolveAssemblyReference.cache
+D:\辽宁畜产品\lnxcp\DBUtility\bin\Release\DBUtility.dll
+D:\辽宁畜产品\lnxcp\DBUtility\bin\Release\DBUtility.pdb
+D:\辽宁畜产品\lnxcp\DBUtility\bin\Release\MySql.Data.dll
+D:\辽宁畜产品\lnxcp\DBUtility\obj\Release\DBUtility.dll
+D:\辽宁畜产品\lnxcp\DBUtility\obj\Release\DBUtility.pdb

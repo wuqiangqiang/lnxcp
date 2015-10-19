@@ -17,6 +17,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Xml;
 using ICSharpCode.SharpZipLib.Zip;
+using DBUtility;
 
 namespace AutoUpdate
 {
@@ -25,6 +26,8 @@ namespace AutoUpdate
     /// </summary>
     public partial class MainWindow : Window
     {
+        DbHelperMySQL dbOperation;
+
         //更新包地址
         private string url = "";
         //文件名字
@@ -40,6 +43,8 @@ namespace AutoUpdate
         {
             InitializeComponent();
 
+            dbOperation = DBUtility.DbHelperMySQL.CreateDbHelper();
+
             pgbUpdate.Maximum = 6;
 
             //if (Application.Current.Properties["startexe"] != null)
@@ -47,7 +52,12 @@ namespace AutoUpdate
             //    startexe = Application.Current.Properties["startexe"].ToString().Trim();
             //}
 
-            startexe = "检测监管系统.exe";
+            //系统名称和更新地址从数据库中取
+            //startexe = dbOperation.GetSingle("select systemname from t_url ").ToString();
+            if (startexe == "")
+            {
+                startexe = "ZRDLnSystem.exe";
+            }
 
             if (Application.Current.Properties["version"] != null)
             {
@@ -60,7 +70,13 @@ namespace AutoUpdate
         {
             pgbUpdate.Value++;
 
-            url = ConfigurationSettings.AppSettings["Url"].Trim();
+            //url = dbOperation.GetSingle("select updateurl from t_url ").ToString();
+            if (url == "")
+            {
+                url = ConfigurationSettings.AppSettings["Url"].Trim();
+            }
+
+            //url = ConfigurationSettings.AppSettings["Url"].Trim();
 
             if (url != "")
             {

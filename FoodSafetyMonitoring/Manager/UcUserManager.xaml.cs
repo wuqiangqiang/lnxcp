@@ -149,7 +149,7 @@ namespace FoodSafetyMonitoring.Manager
                             "FROM sys_client_user ,sys_client_sysdept,sys_client_role " +
                             "WHERE sys_client_user.fk_dept = sys_client_sysdept.INFO_CODE " +
                             "and sys_client_user.ROLE_ID = sys_client_role.NUMB_ROLE " +
-                            "and sys_client_user.fk_dept = " + dept_id;
+                            "and sys_client_user.fk_dept = '" + dept_id + "'";
 
             try
             {
