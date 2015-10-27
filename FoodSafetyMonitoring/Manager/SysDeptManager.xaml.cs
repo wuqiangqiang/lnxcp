@@ -845,7 +845,19 @@ namespace FoodSafetyMonitoring.Manager
                        DataRow row = department.Row.Table.NewRow();
                        row.ItemArray = (object[])department.Row.ItemArray.Clone();
                        row["FK_CODE_DEPT"] = row["INFO_CODE"];
-                       row["FLAG_TIER"] = (Convert.ToInt32(department.Row["FLAG_TIER"].ToString()) + 1);
+
+                       //上级部门级别
+                       int fk_flag_tier = Convert.ToInt32(department.Row["FLAG_TIER"].ToString());
+                       //导入的部门级别
+                       string dept_flag = importdt.Rows[i][1].ToString();
+                       DataRow[] rows = dt_level.Select("levelname = '" + dept_flag + "'");
+                       int flag_tier = Convert.ToInt32(rows[0]["levelid"].ToString());
+                       if (flag_tier <= fk_flag_tier)
+                       {
+                           Toolkit.MessageBox.Show("导入的部门级别不能高于上级部门，请确认后重新导入!", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                           return;
+                       }
+                       row["FLAG_TIER"] = flag_tier;
 
                        //
                        int maxID = 0;
@@ -880,32 +892,10 @@ namespace FoodSafetyMonitoring.Manager
                        row["tel"] = importdt.Rows[i][8].ToString();
                        row["phone"] = importdt.Rows[i][7].ToString();
 
-                       string city_flag = importdt.Rows[i][5].ToString();
+                       string type = importdt.Rows[i][5].ToString();
                        if (row["FLAG_TIER"].ToString() == "4")
                        {
-                           if (city_flag == "")
-                           {
-                               load.Close();
-                               Toolkit.MessageBox.Show("是否直属不能为空！", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                               return;
-                           }
-                           else
-                           {
-                               if (city_flag == "是")
-                               {
-                                   row["isdept"] = "1";
-                               }
-                               else
-                               {
-                                   row["isdept"] = "0";
-                               }
-                           }
-                       }
-
-                       string type = importdt.Rows[i][4].ToString();
-                       if (row["FLAG_TIER"].ToString() == "4")
-                       {
-                           if (city_flag == "")
+                           if (type == "")
                            {
                                load.Close();
                                Toolkit.MessageBox.Show("检测站点性质不能为空！", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -934,27 +924,32 @@ namespace FoodSafetyMonitoring.Manager
                       
 
                        //根据当前部门的级别来赋省，市，区的值
-                       string provice = importdt.Rows[i][1].ToString();
-                       string city = importdt.Rows[i][2].ToString();
-                       string country = importdt.Rows[i][3].ToString();
+                       string provice = importdt.Rows[i][2].ToString();
+                       string city = importdt.Rows[i][3].ToString();
+                       string country = importdt.Rows[i][4].ToString();
 
-                       if (row["FLAG_TIER"].ToString() == "4" || row["FLAG_TIER"].ToString() == "3")
-                       { 
-                           if(provice == "" || city == "" || country == "")
-                           {
-                               load.Close();
-                               Toolkit.MessageBox.Show("省市区不能为空！", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                               return;
-                           }
-
+                       if (provice != "")
+                       {
                            bool provice_exit = dbOperation.GetDbHelper().Exists(string.Format("SELECT count(id) from sys_city where name ='{0}'", provice));
                            if (!provice_exit)
                            {
                                load.Close();
                                Toolkit.MessageBox.Show("省：" + provice + "不存在,请确认！", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
                                return;
-                           }
 
+                           }
+                           else
+                           {
+                               row["Province"] = ProvinceCityTable.Select("name='" + provice + "'")[0]["id"].ToString();
+                           }
+                       }
+                       else
+                       {
+                           row["Province"] = "";
+                       }
+
+                       if (city != "")
+                       {
                            bool city_exit = dbOperation.GetDbHelper().Exists(string.Format("SELECT count(id) from sys_city where name ='{0}'", city));
                            if (!city_exit)
                            {
@@ -962,7 +957,18 @@ namespace FoodSafetyMonitoring.Manager
                                Toolkit.MessageBox.Show("市：" + city + "不存在,请确认！", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
                                return;
                            }
+                           else
+                           {
+                               row["City"] = dbOperation.GetDbHelper().GetSingle(string.Format("SELECT id from sys_city where name ='{0}' and pid = '{1}'", city, row["Province"])).ToString();
+                           }
+                       }
+                       else
+                       {
+                           row["City"] = "";
+                       }
 
+                       if (country != "")
+                       {
                            bool country_exit = dbOperation.GetDbHelper().Exists(string.Format("SELECT count(id) from sys_city where name ='{0}'", country));
                            if (!country_exit)
                            {
@@ -970,77 +976,14 @@ namespace FoodSafetyMonitoring.Manager
                                Toolkit.MessageBox.Show("区：" + country + "不存在,请确认！", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
                                return;
                            }
-                       }
-                       else if (row["FLAG_TIER"].ToString() == "2")
-                       {
-                           if (provice == "" || city == "" )
+                           else
                            {
-                               load.Close();
-                               Toolkit.MessageBox.Show("省市不能为空！", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                               return;
-                           }
-
-                           bool provice_exit = dbOperation.GetDbHelper().Exists(string.Format("SELECT count(id) from sys_city where name ='{0}'", provice));
-                           if (!provice_exit)
-                           {
-                               load.Close();
-                               Toolkit.MessageBox.Show("省：" + provice + "不存在,请确认！", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                               return;
-                           }
-
-                           bool city_exit = dbOperation.GetDbHelper().Exists(string.Format("SELECT count(id) from sys_city where name ='{0}'", city));
-                           if (!city_exit)
-                           {
-                               load.Close();
-                               Toolkit.MessageBox.Show("市：" + city + "不存在,请确认！", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                               return;
+                               row["Country"] = dbOperation.GetDbHelper().GetSingle(string.Format("SELECT id from sys_city where name ='{0}' and pid = '{1}'", country, row["City"])).ToString();
                            }
                        }
-                       else if (row["FLAG_TIER"].ToString() == "1")
+                       else
                        {
-                           if (provice == "" )
-                           {
-                               load.Close();
-                               Toolkit.MessageBox.Show("省不能为空！", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                               return;
-                           }
-
-                           bool provice_exit = dbOperation.GetDbHelper().Exists(string.Format("SELECT count(id) from sys_city where name ='{0}'", provice));
-                           if (!provice_exit)
-                           {
-                               load.Close();
-                               Toolkit.MessageBox.Show("省：" + provice + "不存在,请确认！", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                               return;
-                           }
-                       } 
-                       
-                       switch (row["FLAG_TIER"].ToString())
-                       {
-                           case "0": row["Province"] = "";
-                               row["City"] = "";
-                               row["Country"] = "";
-                               break;
-                           case "1":  
-                               row["Province"] = ProvinceCityTable.Select("name='" + provice + "'")[0]["id"].ToString();
-                               row["City"] = "";
-                               row["Country"] = "";
-                               break;
-                           case "2": 
-                               row["Province"] = ProvinceCityTable.Select("name='" + provice + "'")[0]["id"].ToString();
-                               row["City"] = dbOperation.GetDbHelper().GetSingle(string.Format("SELECT id from sys_city where name ='{0}' and pid = '{1}'", city, row["Province"])).ToString();
-                               row["Country"] = "";
-                               break;
-                           case "3": 
-                               row["Province"] = ProvinceCityTable.Select("name='" + provice + "'")[0]["id"].ToString();
-                               row["City"] = dbOperation.GetDbHelper().GetSingle(string.Format("SELECT id from sys_city where name ='{0}' and pid = '{1}'", city, row["Province"])).ToString();
-                               row["Country"] = dbOperation.GetDbHelper().GetSingle(string.Format("SELECT id from sys_city where name ='{0}' and pid = '{1}'", country, row["City"])).ToString();
-                               break;
-                           case "4":
-                               row["Province"] = ProvinceCityTable.Select("name='" + provice + "'")[0]["id"].ToString();
-                               row["City"] = dbOperation.GetDbHelper().GetSingle(string.Format("SELECT id from sys_city where name ='{0}' and pid = '{1}'", city, row["Province"])).ToString();
-                               row["Country"] = dbOperation.GetDbHelper().GetSingle(string.Format("SELECT id from sys_city where name ='{0}' and pid = '{1}'", country, row["City"])).ToString();
-                               break;
-                           default: break;
+                           row["Country"] = "";
                        }
 
                        Department newDepartment = new Department();
@@ -1048,10 +991,10 @@ namespace FoodSafetyMonitoring.Manager
                        newDepartment.Name = row["INFO_NAME"].ToString();
                        newDepartment.Row = row;
 
-                       string sql = String.Format("insert into sys_client_sysdept (INFO_CODE,INFO_NAME,FLAG_TIER,FK_CODE_DEPT,PROVINCE,CITY,COUNTRY,ADDRESS,CONTACTER,TEL,PHONE,TYPE,supplierId,isdept) values " +
-                           "('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}');"
+                       string sql = String.Format("insert into sys_client_sysdept (INFO_CODE,INFO_NAME,FLAG_TIER,FK_CODE_DEPT,PROVINCE,CITY,COUNTRY,ADDRESS,CONTACTER,TEL,PHONE,TYPE,supplierId) values " +
+                           "('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}');"
                      , row["INFO_CODE"], row["INFO_NAME"], row["FLAG_TIER"], row["FK_CODE_DEPT"]
-                     , row["PROVINCE"], row["CITY"], row["COUNTRY"], row["ADDRESS"], row["CONTACTER"], row["TEL"], row["PHONE"], row["TYPE"], row["supplierId"], row["isdept"]);
+                     , row["PROVINCE"], row["CITY"], row["COUNTRY"], row["ADDRESS"], row["CONTACTER"], row["TEL"], row["PHONE"], row["TYPE"], row["supplierId"]);
 
                        try
                        {
