@@ -60,6 +60,18 @@ namespace FoodSafetyMonitoring
             this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
             //this.KeyDown += new KeyEventHandler(MainWindow_KeyDown);
             //this.StateChanged += new EventHandler(MainWindow_StateChanged);
+
+            //根据分辨率判断标题字体大小
+            if (rc.Width < 1680)
+            {
+                _title_dept.FontSize = 17;
+                _title_1.FontSize = 24;
+            }
+            else
+            {
+                _title_dept.FontSize = 22;
+                _title_1.FontSize = 30;
+            }
         }
 
 
@@ -323,6 +335,17 @@ namespace FoodSafetyMonitoring
             Rect rc = SystemParameters.WorkArea;//获取工作区大小
             this.Width = rc.Width;
             this.Height = rc.Height;
+            //根据分辨率判断标题字体大小
+            if (rc.Width < 1680)
+            {
+                _title_dept.FontSize = 17;
+                _title_1.FontSize = 24;
+            }
+            else
+            {
+                _title_dept.FontSize = 22;
+                _title_1.FontSize = 30;
+            }
 
         }
 
@@ -334,6 +357,17 @@ namespace FoodSafetyMonitoring
             this.Top = rcnormal.Top;
             this.Width = rcnormal.Width;
             this.Height = rcnormal.Height;
+            //根据分辨率判断标题字体大小
+            if (rcnormal.Width < 1680)
+            {
+                _title_dept.FontSize = 17;
+                _title_1.FontSize = 24;
+            }
+            else
+            {
+                _title_dept.FontSize = 22;
+                _title_1.FontSize = 30;
+            }
         }
 
         //移动窗口

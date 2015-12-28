@@ -21,3 +21,4 @@ D:\辽宁畜产品\lnxcp\DBUtility\bin\Release\DBUtility.pdb
 D:\辽宁畜产品\lnxcp\DBUtility\bin\Release\MySql.Data.dll
 D:\辽宁畜产品\lnxcp\DBUtility\obj\Release\DBUtility.dll
 D:\辽宁畜产品\lnxcp\DBUtility\obj\Release\DBUtility.pdb
+D:\辽宁畜产品\lnxcp\DBUtility\obj\Release\DBUtility.csprojResolveAssemblyReference.cache
