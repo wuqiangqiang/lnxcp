@@ -222,6 +222,7 @@ namespace FoodSafetyMonitoring
             }
 
             //加载主画面
+            grid_mainpage.Visibility = Visibility.Visible;
             TabItem temptb = new TabItem();
             temptb.Header = "首页";
             temptb.Tag = "1";
@@ -231,7 +232,8 @@ namespace FoodSafetyMonitoring
             _tab.SetValue(Grid.ColumnSpanProperty,2);
             grid_Component.Children.Remove(_tab);
             grid_mainpage.Children.Add(_tab);
-            grid_Menu.Background = Brushes.White;
+            grid_Menu.Visibility = Visibility.Hidden;
+            //grid_Menu.Background = Brushes.White;
 
             //让首页主菜单呈现选中状态
             _grid_0.Background = new SolidColorBrush(Color.FromRgb(25, 49, 115));
@@ -277,6 +279,34 @@ namespace FoodSafetyMonitoring
                 {
                     _tab.Items.Remove(item);
                     break;
+                }
+            }
+            //判断当前有几个tab页打开，若为0，则隐藏
+            if (_tab.Items.Count == 0)
+            {
+                grid_Component.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void layout_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //判断鼠标右键按下
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                Border bor = sender as Border;
+                string header = bor.Tag.ToString();
+                foreach (TabItem item in _tab.Items)
+                {
+                    if (item.Header.ToString() == header)
+                    {
+                        _tab.Items.Remove(item);
+                        break;
+                    }
+                }
+                //判断当前有几个tab页打开，若为0，则隐藏
+                if (_tab.Items.Count == 0)
+                {
+                    grid_Component.Visibility = Visibility.Hidden;
                 }
             }
         }
@@ -460,6 +490,8 @@ namespace FoodSafetyMonitoring
                     mainWindow._tab.Items.Remove(item);
                 }
 
+                mainWindow.grid_Component.Visibility = Visibility.Hidden;
+
                 mainWindow.last_name = Name;
             }
             
@@ -478,6 +510,7 @@ namespace FoodSafetyMonitoring
                 }
                 if (flag == 0)
                 {
+                    mainWindow.grid_Component.Visibility = Visibility.Visible;
                     TabItem temptb = new TabItem();
                     temptb.Header = Name;
                     temptb.Tag = "1";
@@ -501,7 +534,8 @@ namespace FoodSafetyMonitoring
 
             if (Name == "首页")
             {
-                grid_Menu.Background = Brushes.White;
+                //grid_Menu.Background = Brushes.White;
+                mainWindow.grid_Menu.Visibility = Visibility.Hidden;
                 mainWindow._tab.SetValue(Grid.ColumnSpanProperty, 2);
                 mainWindow.grid_Component.Children.Remove(mainWindow._tab);
                 mainWindow.grid_mainpage.Children.Remove(mainWindow._tab);
@@ -511,7 +545,8 @@ namespace FoodSafetyMonitoring
             {
                if( mainWindow.grid_Component.Children.Count == 0)
                {
-                   grid_Menu.Background = new SolidColorBrush(Color.FromRgb(242, 241, 241));
+                   mainWindow.grid_Menu.Visibility = Visibility.Visible;
+                   //grid_Menu.Background = new SolidColorBrush(Color.FromRgb(242, 241, 241));
                    mainWindow.grid_mainpage.Children.Remove(mainWindow._tab);
                    mainWindow.grid_Component.Children.Add(mainWindow._tab);
                }
