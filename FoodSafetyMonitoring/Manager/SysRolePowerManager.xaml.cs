@@ -22,7 +22,7 @@ namespace FoodSafetyMonitoring.Manager
     /// <summary>
     /// SysRolePowerManager.xaml 的交互逻辑
     /// </summary>
-    public partial class SysRolePowerManager : UserControl,IClickChildMenuInitUserControlUI
+    public partial class SysRolePowerManager : UserControl
 
     {
         private DBUtility.DbHelperMySQL dbHelper = null;
@@ -94,24 +94,9 @@ namespace FoodSafetyMonitoring.Manager
             }
         }
 
-        public DataTable GetAllButton()
-        {
-            string strSql = "select * from SYS_CLIENT_BUTTON order by INFO_CODE";
-            try
-            {
-                DataTable dt = dbHelper.GetDataSet(strSql).Tables[0];
-                return dt;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
 
         public void LoadTree(DataTable dt, TreeItem ti)
         {
-            DataTable buttonTable = GetAllButton();
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -122,14 +107,7 @@ namespace FoodSafetyMonitoring.Manager
                     tiTmp.text = dt.Rows[i]["SUB_NAME"].ToString();
                     tiTmp.parent = ti;
 
-                    //DataRow[] drs = buttonTable.Select("SUB_FATHER_ID='" + (tiTmp.tag as DataRow)["SUB_ID"].ToString() + "'");
-                    //for (int j = 0; j < drs.Length; j++)
-                    //{
-                    //    TreeItem tiButton = new TreeItem();
-                    //    tiButton.tag = drs[j];
-                    //    tiButton.text = drs[j]["SUB_NAME"].ToString();
-                    //    tiButton.parent = tiTmp;
-                    //}
+                    LoadTree(dt, tiTmp);
                 }
             }
         }
@@ -145,8 +123,6 @@ namespace FoodSafetyMonitoring.Manager
 
             List<string> list = GetUserRoleMenu(id);
 
-            DataTable dt = GetUserRoleButton(id);
-
             foreach (string item in list)
             {
                 foreach (var ti in tvPermissions.Items)
@@ -155,37 +131,25 @@ namespace FoodSafetyMonitoring.Manager
                     foreach (var tii in ((TreeItem)ti).children)
                     {
                         flag = 1;
-                        List<string> temp = new List<string>();
-
-                        foreach (DataRow dr in dt.Rows)
-                        {
-                            if (dr["FK_CODE_ROLE"].ToString() == id && dr["FK_CODE_MENU"].ToString() == item)
-                            {
-                                temp.Add(dr["FK_CODE_BUTTON"].ToString());
-                            }
-                        }
 
                         foreach (var tiii in tii.children)
                         {
-                            //foreach (DataRow dr in dt.Rows)
-                            //{
-                            //    if (dr["FK_CODE_ROLE"].ToString() == id && dr["FK_CODE_MENU"].ToString() == item && dr["FK_CODE_BUTTON"].ToString() == (tiii.tag as DataRow)["INFO_CODE"].ToString())
-                            //    {
-                            //        tiii.IsChecked = true;
-                            //    }
-                            //}
+                            flag = 2;
 
-                            if (temp.Contains((tiii.tag as DataRow)["INFO_CODE"].ToString()))
+                            if ((tiii as TreeItem).tag.ToString() == item)
                             {
-                                tiii.IsChecked = true;
+                                (tiii as TreeItem).IsChecked = true;
+                                goto con_for;
                             }
                         }
 
-                        if (tii.tag.ToString() == item)
+                        //只有当二级菜单无子菜单的情况下，才对二级菜单进行打勾
+                        if (flag == 1)
                         {
-                            if (temp.Count == tii.children.Count)
+                            if ((tii as TreeItem).tag.ToString() == item)
                             {
                                 (tii as TreeItem).IsChecked = true;
+                                goto con_for;
                             }
                         }
                     }
@@ -195,9 +159,11 @@ namespace FoodSafetyMonitoring.Manager
                         if ((ti as TreeItem).tag.ToString() == item)
                         {
                             (ti as TreeItem).IsChecked = true;
+                            goto con_for;
                         }
                     }
                 }
+                con_for: continue;
             }
 
             btnSave.Tag = id;
@@ -226,23 +192,6 @@ namespace FoodSafetyMonitoring.Manager
             return list;
         }
 
-        /// <summary>
-        /// 获取角色菜单按钮权限管理
-        /// </summary>
-        /// <param name="id">角色代码</param>
-        private DataTable GetUserRoleButton(string id)
-        {
-            DataTable dt = new DataTable();
-            string strSql = string.Format("SELECT * FROM SYS_CLIENT_ROLEBUTTON WHERE FK_CODE_ROLE='{0}'", id);
-            try
-            {
-                dt = dbHelper.GetDataSet(strSql).Tables[0];
-            }
-            catch (Exception)
-            {
-            }
-            return dt;
-        }
 
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -250,12 +199,6 @@ namespace FoodSafetyMonitoring.Manager
             if (btnSave.Tag != null)
             {
                 List<string> list_roleMenu = new List<string>();
-                List<string> list_roleButton = new List<string>();
-
-
-                List<string> listSql = new List<string>();
-
-                listSql.Add("delete from SYS_CLIENT_ROLEBUTTON where FK_CODE_ROLE='" + btnSave.Tag.ToString() + "'");
 
                 foreach (TreeItem ti in tvPermissions.Items)
                 {
@@ -269,32 +212,23 @@ namespace FoodSafetyMonitoring.Manager
                     {
 
                         //遍历第二级目录
-                        if (tii.IsChecked == true)
+                        if (tii.IsChecked == true || tii.IsChecked == null)
                         {
                             list_roleMenu.Add(tii.tag.ToString());
                         }
 
-                        //遍历第三级目录
-                        int count = 0;
-                        foreach (TreeItem tiii in tii.children)
+                        foreach (TreeItem tiii in tii.children)//遍历第三级目录
                         {
-                            DataRow dButton = tiii.tag as DataRow;
                             if (tiii.IsChecked == true)
                             {
-
+                                list_roleMenu.Add(tiii.tag.ToString());
                             }
-                        }
-                        if (count > 0 && count != tii.children.Count)
-                        {
-
                         }
                     }
 
 
                 }
 
-
-                listSql.AddRange(list_roleButton);
 
                 StringBuilder s_list_roleMenu = new StringBuilder();
                 for (int i = 0; i < list_roleMenu.Count; i++)
@@ -372,17 +306,6 @@ namespace FoodSafetyMonitoring.Manager
                 }
             }
         }
-
-
-
-        #region IClickChildMenuInitUserControlUI 成员
-
-        public void InitUserControlUI()
-        {
-            
-        }
-
-        #endregion
     }
 
     public class TreeItem : INotifyPropertyChanged
@@ -516,14 +439,5 @@ namespace FoodSafetyMonitoring.Manager
         public event PropertyChangedEventHandler PropertyChanged;
         //////////////////////////////////////////////////////////////////////////
 
-        #region INotifyPropertyChanged 成员
-
-        //event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
-        //{
-        //    add { throw new NotImplementedException(); }
-        //    remove { throw new NotImplementedException(); }
-        //}
-
-        #endregion
     }
 }

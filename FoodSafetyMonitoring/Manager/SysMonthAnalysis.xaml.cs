@@ -29,23 +29,22 @@ namespace FoodSafetyMonitoring.Manager
         private string page_url;
         private string user_id;
         private System.Windows.Forms.WebBrowser web;
-        private readonly List<string> year = new List<string>() { "2014",
-            "2015", 
+        private readonly List<string> year = new List<string>() { "2015", 
             "2016",
             "2017",
             "2018",
             "2019",
             "2020"};//初始化变量
 
-        private readonly List<string> month = new List<string>() { "1",
-            "2", 
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
+        private readonly List<string> month = new List<string>() { "01",
+            "02", 
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
             "10",
             "11",
             "12"};//初始化变量
@@ -57,10 +56,31 @@ namespace FoodSafetyMonitoring.Manager
             user_id = (Application.Current.Resources["User"] as UserInfo).ID.ToString();
 
             _year.ItemsSource = year;
-            _year.SelectedIndex = 1;
+            for (int i = 0; i < _year.Items.Count; i++)
+            {
+                if (_year.Items[i].ToString() == DateTime.Now.Year.ToString())
+                {
+                    _year.SelectedItem = _year.Items[i];
+                    break;
+                }
+            }
 
             _month.ItemsSource = month;
-            _month.SelectedIndex = 8;
+            string month_Now = DateTime.Now.Month.ToString();
+            if (int.Parse(month_Now) < 10)
+            {
+                month_Now = "0" + month_Now;
+            }
+            for (int i = 0; i < _month.Items.Count; i++)
+            {
+                if (_month.Items[i].ToString() == month_Now)
+                {
+                    _month.SelectedItem = _month.Items[i];
+                    break;
+                }
+            }
+
+            ComboboxTool.InitComboboxSource(_detect_huanjie, "SELECT id,name FROM t_liaoning_huanjie", "cxtj");
 
             //地址从数据库中获取
             page_url = dbOperation.GetDbHelper().GetSingle("select monthreport from t_url ").ToString();
@@ -76,10 +96,10 @@ namespace FoodSafetyMonitoring.Manager
             if (page_url != "")
             {
                 //_webBrowser.Source = new Uri(string.Format(page_url, user_id, "3", _month.Text, _year.Text));
-
                 System.Windows.Forms.Integration.WindowsFormsHost host = new System.Windows.Forms.Integration.WindowsFormsHost();
                 web = new System.Windows.Forms.WebBrowser();
-                web.Url = new Uri(string.Format(page_url, user_id, "3", _month.Text, _year.Text));
+                web.ScriptErrorsSuppressed = true;
+                web.Url = new Uri(string.Format(page_url, user_id, "3", _month.Text, _year.Text, _detect_huanjie.SelectedIndex < 1 ? "" : (_detect_huanjie.SelectedItem as Label).Tag));
                 host.Child = web;
                 grid_info.Children.Add(host);
             }

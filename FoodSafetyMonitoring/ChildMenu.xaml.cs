@@ -308,7 +308,7 @@ namespace FoodSafetyMonitoring
                         flag = 1;
                         break;
                     //帮助->帮助->帮助
-                    case "80101": temptb.Header = (sender as Button).Content.ToString();
+                    case "80101": temptb.Header = (sender as Button).Content.ToString();   
                         temptb.Content = new UcUnrealizedModul();
                         flag = 1;
                         break;
@@ -317,6 +317,7 @@ namespace FoodSafetyMonitoring
                         temptb.Content = new SysHelp();
                         flag = 1;
                         break;
+
                     //电子出证->电子出证->新建检疫证单(动物)
                     case "90101": temptb.Header = (sender as Button).Content.ToString();
                         temptb.Content = new UcCreateCertificate(mainWindow.dbOperation);

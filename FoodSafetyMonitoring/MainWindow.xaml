@@ -154,7 +154,7 @@
             <Grid Grid.Column="6" x:Name="_grid_5">
                 <Image x:Name="_image_5" />
                 <TextBlock x:Name="_text_5" FontFamily="微软雅黑"  Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,22"/>
-            </Grid>
+            </Grid> 
             <Grid Grid.Column="7" x:Name="_grid_6">
                 <Image x:Name="_image_6" />
                 <TextBlock x:Name="_text_6" FontFamily="微软雅黑"  Foreground="White" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,22"/>
@@ -170,14 +170,17 @@
         </Grid>
         <Grid Grid.Row="2" x:Name="grid_mainpage" Visibility="Hidden">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition MaxWidth="210" />
-                <!--<ColumnDefinition Width="6"/>-->
+                <ColumnDefinition MaxWidth="220" />
+                <ColumnDefinition Width="14"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid x:Name="grid_Menu" Background="#f2f1f1" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,2,0,0" >
             </Grid>
             <!--<GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="6"></GridSplitter>-->
-            <Grid x:Name="grid_Component" Grid.Column="1">
+            <Grid Grid.Column="1" x:Name="grid_splitter"  Background="#f2f1f1" Margin="0,2,0,0">
+                <Image x:Name="_image" Width="14" Height="52" Source="/res/main_left.png" MouseDown="_changeSize_MouseDown" MouseEnter="_changeSize_MouseEnter" MouseLeave="_changeSize_MouseLeave"/>
+            </Grid>
+            <Grid x:Name="grid_Component" Grid.Column="2">
                 <TabControl x:Name="_tab" Background="White" BorderThickness="0,3,0,0" BorderBrush="#c6cbd0">
                 </TabControl>
             </Grid>

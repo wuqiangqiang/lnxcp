@@ -52,8 +52,9 @@
                     <ControlTemplate TargetType="{x:Type Expander}">
                         <Grid>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="5"/>
                                 <RowDefinition Height="35"/>
-                                <RowDefinition Height="3"/>
+                                <RowDefinition Height="5"/>
                                 <RowDefinition x:Name="gr" Height="0"/>
                             </Grid.RowDefinitions>
                             <!--<Border x:Name="hea" Background="#f2f1f1" BorderThickness="0" BorderBrush="white" Grid.Row="0">
@@ -66,14 +67,14 @@
                                     <ContentPresenter HorizontalAlignment="Left" Margin="10,0,0,0" ContentSource="Header" VerticalAlignment="Center"/>
                                 </BulletDecorator>
                             </Border>-->
-                            <Grid Grid.Row="0" Background="#f2f1f1" x:Name="back">
+                            <Grid Grid.Row="1" Background="#f2f1f1" x:Name="back">
                                 <ContentPresenter  HorizontalAlignment="Left" Margin="35,0,0,0" ContentSource="Header" VerticalAlignment="Center"/>
                                 <ToggleButton Grid.Column="0"  Margin="5,0,0,0"  Height="35" Width="210" Template="{StaticResource ToggleButtonTemp}"
                                                   IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                                   OverridesDefaultStyle="True"/>
                             </Grid>
-                            <Image x:Name="img" Source="/res/line.png" Grid.Row="1"></Image>
-                            <Border x:Name="scv" Background="#f2f1f1" BorderThickness="0" BorderBrush="Gray" Grid.Row="2" >
+                            <!--<Image x:Name="img" Source="/res/line.png" Grid.Row="1"></Image>-->
+                            <Border x:Name="scv" Background="#f2f1f1" BorderThickness="0" BorderBrush="Gray" Grid.Row="3" >
                                 <ContentPresenter Margin="0" ContentSource="Content"/>
                             </Border>
                         </Grid>
@@ -82,7 +83,7 @@
                                 <Setter TargetName="gr" Property="Height" Value="{Binding Path=DesiredSize/Height,ElementName=scv}"/>
                                 <Setter TargetName="scv" Property="Background" Value="#f2f1f1"/>
                                 <Setter TargetName="back" Property="Background" Value="#c6cbd0"/>
-                                <Setter TargetName="img" Property="Source" Value="/res/line_pressed.png"/>
+                                <!--<Setter TargetName="img" Property="Source" Value="/res/line_pressed.png"/>-->
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -123,7 +124,7 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Grid  x:Name="_grid" HorizontalAlignment="Left" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+    <Grid  x:Name="_grid" HorizontalAlignment="Right" ScrollViewer.VerticalScrollBarVisibility="Auto" >
         <StackPanel>
             <Expander ExpandDirection="Down" Width="210" x:Name="_expander_0">
                 <Expander.Header>

@@ -69,6 +69,7 @@ namespace FoodSafetyMonitoring.Manager
             _cardbrand.Text = table.Rows[0][23].ToString();
             _cardno.Text = table.Rows[0][24].ToString();
             _detecthuanjie.Text = table.Rows[0][26].ToString();
+            _detectnumber.Text = table.Rows[0][27].ToString();
 
             //检测结果为疑似阳性变红
             if (_resultName.Text == "疑似阳性" || _resultName.Text == "确证阳性")
@@ -101,7 +102,7 @@ namespace FoodSafetyMonitoring.Manager
                 _reviewUserid.Text = (Application.Current.Resources["User"] as UserInfo).ShowName;
                 _reviewDate.Text = DateTime.Now.ToString();
                 ComboboxTool.InitComboboxSource(_reviewResult, "SELECT resultId,resultName FROM t_det_result where openFlag = '1' ORDER BY id", "lr");
-                ComboboxTool.InitComboboxSource(_reviewReagent, "select reagentId,reagentName from t_det_reagent where openFlag = '1' and reagentId <> '1'", "lr");
+                ComboboxTool.InitComboboxSource(_reviewReagent, "select reagentId,reagentName from t_det_reagent where openFlag = '1' and reviewflag = '1'", "lr");
 
                 btnSave.Visibility = Visibility.Visible;
                 _reviewReagent.Visibility = Visibility.Visible;

@@ -40,7 +40,7 @@ namespace FoodSafetyMonitoring.Manager
             MyColumns.Add("orderid", new MyColumn("orderid", "检测单编号") { BShow = true, Width = 8 });
             MyColumns.Add("detecttypename", new MyColumn("detecttypename", "信息来源") { BShow = true, Width = 8 });
             MyColumns.Add("detectdate", new MyColumn("detectdate", "检测时间") { BShow = true, Width = 18 });
-            MyColumns.Add("partname", new MyColumn("partname", "检测单位") { BShow = true, Width = 16 });
+            MyColumns.Add("partname", new MyColumn("partname", "检测单位") { BShow = true, Width = 22 });
             MyColumns.Add("huanjiename", new MyColumn("huanjiename", "样品环节") { BShow = true, Width = 8 });
             MyColumns.Add("itemname", new MyColumn("itemname", "检测项目") { BShow = true, Width = 10 });
             MyColumns.Add("objectname", new MyColumn("objectname", "检测对象") { BShow = true, Width = 8 });

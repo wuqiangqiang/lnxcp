@@ -2734,7 +2734,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>2052</td><td>ZRD</td><td>0</td><td/><td>-1658627888</td></row>
+		<row><td>COMPANY_NAME</td><td>2052</td><td>ZRD</td><td>0</td><td/><td>-769368751</td></row>
 		<row><td>DN_AlwaysInstall</td><td>2052</td><td>始终安装</td><td>0</td><td/><td>-1658599601</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>2052</td><td>系统颜色设置不足以运行 [ProductName]。</td><td>0</td><td/><td>-1658599601</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION35SP1</td><td>1033</td><td>Microsoft .NET Framework 3.5 SP1 needs to be installed for this installation to continue.</td><td>0</td><td/><td>-1658611857</td></row>
@@ -3844,8 +3844,8 @@
 		<row><td>IDS__TargetReq_DESC_PROCESSOR</td><td>2052</td><td>对于运行 [ProductName] 处理器不足。</td><td>0</td><td/><td>-1658599601</td></row>
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>2052</td><td>对于运行 [ProductName] 内存量不足。</td><td>0</td><td/><td>-1658599601</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>2052</td><td>对于运行 [ProductName] 屏幕分辨率不足。</td><td>0</td><td/><td>-1658599601</td></row>
-		<row><td>ID_STRING1</td><td>2052</td><td>http://www.ZRD.com</td><td>0</td><td/><td>-1658627888</td></row>
-		<row><td>ID_STRING2</td><td>2052</td><td>ZRD</td><td>0</td><td/><td>-1658627888</td></row>
+		<row><td>ID_STRING1</td><td>2052</td><td>http://www.ZRD.com</td><td>0</td><td/><td>-769368751</td></row>
+		<row><td>ID_STRING2</td><td>2052</td><td>ZRD</td><td>0</td><td/><td>-769368751</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>ZRDLnSystem</td><td>0</td><td/><td>-1658642577</td></row>
 		<row><td>ID_STRING3</td><td>2052</td><td>ZRDLnSystem</td><td>0</td><td/><td>-1658642577</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>检测监管系统</td><td>0</td><td/><td>-1658644432</td></row>

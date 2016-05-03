@@ -30,8 +30,7 @@ namespace FoodSafetyMonitoring.Manager
         private DataTable currenttable;
         private List<TaskInfo> list = new List<TaskInfo>();
         private Dictionary<string, MyColumn> MyColumns = new Dictionary<string, MyColumn>();
-        private readonly List<string> year = new List<string>() { "2014",
-            "2015", 
+        private readonly List<string> year = new List<string>() { "2015", 
             "2016",
             "2017",
             "2018",
@@ -46,7 +45,14 @@ namespace FoodSafetyMonitoring.Manager
             user_flag_tier = (Application.Current.Resources["User"] as UserInfo).FlagTier;
 
             _year.ItemsSource = year;
-            _year.SelectedIndex = 1;
+            for (int i = 0; i < _year.Items.Count; i++)
+            {
+                if (_year.Items[i].ToString() == DateTime.Now.Year.ToString())
+                {
+                    _year.SelectedItem = _year.Items[i];
+                    break;
+                }
+            }
 
             ////检测单位
             //switch (user_flag_tier)
@@ -159,7 +165,7 @@ namespace FoodSafetyMonitoring.Manager
             {
                 DataColumn column = new DataColumn(ItemNames[i]);
                 tabledisplay.Columns.Add(column);
-                MyColumns.Add(ItemNames[i].ToString(), new MyColumn(ItemNames[i].ToString(), ItemNames[i].ToString()) { BShow = true, Width = 10 });
+                MyColumns.Add(ItemNames[i].ToString().ToLower(), new MyColumn(ItemNames[i].ToString().ToLower(), ItemNames[i].ToString()) { BShow = true, Width = 10 });
                 tabledisplay.Columns.Add(new DataColumn("任务完成率"+ i));
                 MyColumns.Add("任务完成率" + i, new MyColumn("任务完成率" + i, "任务完成率") { BShow = true, Width = 10 });
             }

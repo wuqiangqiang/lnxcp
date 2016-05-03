@@ -103,7 +103,7 @@ namespace FoodSafetyMonitoring.Manager
             {
                 DataColumn column = new DataColumn(ItemNames[i]);
                 tabledisplay.Columns.Add(column);
-                MyColumns.Add(ItemNames[i], new MyColumn(ItemNames[i], ItemNames[i]) { BShow = true, Width = 15 });
+                MyColumns.Add(ItemNames[i].ToLower(), new MyColumn(ItemNames[i].ToLower(), ItemNames[i]) { BShow = true, Width = 15 });
             }
 
             //为表中各行生成数据

@@ -41,7 +41,7 @@ namespace FoodSafetyMonitoring
         private string deptId = (Application.Current.Resources["User"] as UserInfo).DepartmentID;
         public string last_name = "首页";//最后一次点击的主菜单名字，默认是首页
 
-
+        private int dot = 0;
         public MainWindow(IDBOperation dbOperation)
         {
             Rect rc = SystemParameters.WorkArea;//获取工作区大小
@@ -229,10 +229,11 @@ namespace FoodSafetyMonitoring
             temptb.Content = new UcMainPage();
             _tab.Items.Add(temptb);
             _tab.SelectedIndex = _tab.Items.Count - 1;
-            _tab.SetValue(Grid.ColumnSpanProperty,2);
+            _tab.SetValue(Grid.ColumnSpanProperty,3);
             grid_Component.Children.Remove(_tab);
             grid_mainpage.Children.Add(_tab);
             grid_Menu.Visibility = Visibility.Hidden;
+            grid_splitter.Visibility = Visibility.Hidden;
             //grid_Menu.Background = Brushes.White;
 
             //让首页主菜单呈现选中状态
@@ -428,6 +429,46 @@ namespace FoodSafetyMonitoring
             max.Source = new BitmapImage(new Uri("pack://application:,," + "/res/max.png"));
             exit.Source = new BitmapImage(new Uri("pack://application:,," + "/res/close.png"));
         }
+
+        private void _changeSize_MouseDown(object sender, RoutedEventArgs e)
+        {
+            if (dot == 0)
+            {
+                grid_mainpage.ColumnDefinitions[0].Width = new GridLength(0, GridUnitType.Pixel);
+                _image.Source = new BitmapImage(new Uri("pack://application:,," + "/res/main_right.png"));
+                dot = 1;
+            }
+            else if (dot == 1)
+            {
+                grid_mainpage.ColumnDefinitions[0].Width = new GridLength(220, GridUnitType.Pixel);
+                _image.Source = new BitmapImage(new Uri("pack://application:,," + "/res/main_left.png"));
+                dot = 0;
+            }
+        }
+
+        private void _changeSize_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (dot == 0)
+            {
+                _image.Source = new BitmapImage(new Uri("pack://application:,," + "/res/main_left_pressed.png"));
+            }
+            else if (dot == 1)
+            {
+                _image.Source = new BitmapImage(new Uri("pack://application:,," + "/res/main_right_pressed.png"));
+            }
+        }
+
+        private void _changeSize_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (dot == 0)
+            {
+                _image.Source = new BitmapImage(new Uri("pack://application:,," + "/res/main_left.png"));
+            }
+            else if (dot == 1)
+            {
+                _image.Source = new BitmapImage(new Uri("pack://application:,," + "/res/main_right.png"));
+            }
+        }
     }
 
     public class MainMenuItem
@@ -536,7 +577,8 @@ namespace FoodSafetyMonitoring
             {
                 //grid_Menu.Background = Brushes.White;
                 mainWindow.grid_Menu.Visibility = Visibility.Hidden;
-                mainWindow._tab.SetValue(Grid.ColumnSpanProperty, 2);
+                mainWindow.grid_splitter.Visibility = Visibility.Hidden;
+                mainWindow._tab.SetValue(Grid.ColumnSpanProperty, 3);
                 mainWindow.grid_Component.Children.Remove(mainWindow._tab);
                 mainWindow.grid_mainpage.Children.Remove(mainWindow._tab);
                 mainWindow.grid_mainpage.Children.Add(mainWindow._tab);
@@ -546,6 +588,7 @@ namespace FoodSafetyMonitoring
                if( mainWindow.grid_Component.Children.Count == 0)
                {
                    mainWindow.grid_Menu.Visibility = Visibility.Visible;
+                   mainWindow.grid_splitter.Visibility = Visibility.Visible;
                    //grid_Menu.Background = new SolidColorBrush(Color.FromRgb(242, 241, 241));
                    mainWindow.grid_mainpage.Children.Remove(mainWindow._tab);
                    mainWindow.grid_Component.Children.Add(mainWindow._tab);

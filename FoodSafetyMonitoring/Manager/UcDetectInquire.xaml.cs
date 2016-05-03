@@ -46,7 +46,7 @@ namespace FoodSafetyMonitoring.Manager
             ComboboxTool.InitComboboxSource(_detect_object1, "SELECT objectId,objectName FROM t_det_object WHERE  (tradeId ='1'or tradeId ='2' or tradeId ='3' or ifnull(tradeId,'') = '') and OPENFLAG = '1'", "cxtj");
             ComboboxTool.InitComboboxSource(_detect_result1, "SELECT resultId,resultName FROM t_det_result where openFlag = '1' ORDER BY id", "cxtj");
             ComboboxTool.InitComboboxSource(_detect_person1, string.Format("call p_user_detuser('{0}')", userId), "cxtj");
-            ComboboxTool.InitComboboxSource(_detect_method, "select reagentId,reagentName from t_det_reagent where openFlag = '1'", "cxtj");
+            ComboboxTool.InitComboboxSource(_detect_method, "select reagentId,reagentName from t_det_reagent where openFlag = '1' and reviewflag = '0'", "cxtj");
             ComboboxTool.InitComboboxSource(_detect_type, "SELECT sourceId,sourceName FROM t_det_source where openFlag = '1'", "cxtj");
             //ComboboxTool.InitComboboxSource(_dept_type, "SELECT typeId,typeName FROM t_dept_type where openFlag = '1'", "cxtj");
             ComboboxTool.InitComboboxSource(_card_brand, "SELECT cardbrandid,cardbrandname FROM t_cardbrand where openFlag = '1'", "cxtj");
@@ -62,13 +62,14 @@ namespace FoodSafetyMonitoring.Manager
 
         private void SetColumns()
         {
-            MyColumns.Add("orderid", new MyColumn("orderid", "检测单编号") { BShow = true,Width = 10 });
+            MyColumns.Add("orderid", new MyColumn("orderid", "检测单编号") { BShow = false });
             MyColumns.Add("detecttype", new MyColumn("detecttype", "数据来源id") { BShow = false });
             MyColumns.Add("detecttypename", new MyColumn("detecttypename", "数据来源") { BShow = true, Width = 8 });
-            MyColumns.Add("detectdate", new MyColumn("detectdate", "检测时间") { BShow = true, Width = 18 });
+            MyColumns.Add("detectdate", new MyColumn("detectdate", "检测时间") { BShow = true, Width = 15 });
             MyColumns.Add("deptid", new MyColumn("deptid", "检测单位id") { BShow = false });
-            MyColumns.Add("deptname", new MyColumn("deptname", "检测单位") { BShow = true, Width = 16 });
+            MyColumns.Add("deptname", new MyColumn("deptname", "检测单位") { BShow = true, Width = 18 });
             MyColumns.Add("huanjiename", new MyColumn("huanjiename", "样品环节") { BShow = true, Width = 8 });
+            MyColumns.Add("detectnumber", new MyColumn("detectnumber", "样品编号") { BShow = true, Width = 12 });
             MyColumns.Add("itemid", new MyColumn("itemid", "检测项目id") { BShow = false });
             MyColumns.Add("itemname", new MyColumn("itemname", "检测项目") { BShow = true, Width = 12 });
             MyColumns.Add("objectid", new MyColumn("objectid", "检测对象id") { BShow = false });
@@ -78,14 +79,14 @@ namespace FoodSafetyMonitoring.Manager
             MyColumns.Add("sensitivityid", new MyColumn("sensitivityid", "检测灵敏度id") { BShow = false });
             MyColumns.Add("sensitivityname", new MyColumn("sensitivityname", "检测灵敏度") { BShow = true, Width = 10 });
             MyColumns.Add("reagentid", new MyColumn("companyid", "检测方法id") { BShow = false });
-            MyColumns.Add("reagentname", new MyColumn("reagentname", "检测方法") { BShow = true, Width = 10 });
+            MyColumns.Add("reagentname", new MyColumn("reagentname", "检测方法") { BShow = false });
             MyColumns.Add("resultid", new MyColumn("resultid", "检测结果id") { BShow = false });
             MyColumns.Add("resultname", new MyColumn("resultname", "检测结果") { BShow = true, Width = 10 });
             MyColumns.Add("detectuserid", new MyColumn("detectuserid", "检测师id") { BShow = false });
-            MyColumns.Add("areaname", new MyColumn("areaname", "来源产地") { BShow = true, Width = 18 });
+            MyColumns.Add("areaname", new MyColumn("areaname", "来源产地") { BShow = false });
             MyColumns.Add("companyid", new MyColumn("companyid", "被检单位id") { BShow = false });
-            MyColumns.Add("companyname", new MyColumn("companyname", "被检单位") { BShow = true, Width = 18 });
-            MyColumns.Add("cardbrandname", new MyColumn("cardbrandname", "检测卡品牌") { BShow = true, Width = 12 });
+            MyColumns.Add("companyname", new MyColumn("companyname", "被检单位") { BShow = true, Width = 16 });
+            MyColumns.Add("cardbrandname", new MyColumn("cardbrandname", "检测卡品牌") { BShow = false });
             MyColumns.Add("sum_num", new MyColumn("sum_num", "总行数") { BShow = false });
 
             _tableview.MyColumns = MyColumns;

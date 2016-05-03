@@ -291,6 +291,12 @@ namespace FoodSafetyMonitoring.Manager
                 {
                     row["Country"] = _lower_country.SelectedIndex < 1 ? "" : (_lower_country.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
                 }
+
+                if (row["Province"].ToString() == "" || row["City"].ToString() == "" || row["Country"].ToString() == "")
+                {
+                    Toolkit.MessageBox.Show("请选择所在地!", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
                 
                 row["INFO_NAME"] = _station.Text;
                 row["address"] = _address.Text;
@@ -417,6 +423,12 @@ namespace FoodSafetyMonitoring.Manager
                 else
                 {
                     Country = _lower_country.SelectedIndex < 1 ? "" : (_lower_country.SelectedItem as System.Windows.Controls.Label).Tag.ToString();
+                }
+
+                if (Province == "" || City == "" || Country == "")
+                {
+                    Toolkit.MessageBox.Show("请选择所在地!", "系统提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
                 }
 
                 string sql = String.Format("UPDATE sys_client_sysdept set INFO_NAME='{0}',ADDRESS='{1}',CONTACTER='{2}',TEL='{3}',PHONE='{4}',TYPE='{5}',supplierId = '{6}',"+
@@ -676,6 +688,7 @@ namespace FoodSafetyMonitoring.Manager
             _detail_info.IsEnabled = true;
             state = "edit";
             _edit.IsEnabled = false;
+            _area_flag.Text = "(必填)";
             _station_flag.Text = "(必填)";
             _station_property_flag.Text = "(必填)";
 
@@ -804,6 +817,7 @@ namespace FoodSafetyMonitoring.Manager
 
             _station_flag.Text = "(必填)";
             _level_flag.Text = "(必填)";
+            _area_flag.Text = "(必填)";
             
             //如果当前添加的是检测单位，则显示检测点性质信息
             if (_level.Text == "检测单位")

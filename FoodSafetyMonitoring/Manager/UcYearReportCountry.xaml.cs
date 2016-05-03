@@ -94,7 +94,7 @@ namespace FoodSafetyMonitoring.Manager
             {
                 DataColumn column = new DataColumn(ItemNames[i]);
                 tabledisplay.Columns.Add(column);
-                MyColumns.Add(ItemNames[i].ToString(), new MyColumn(ItemNames[i].ToString(), ItemNames[i].ToString()) { BShow = true, Width = 10 });
+                MyColumns.Add(ItemNames[i].ToString().ToLower(), new MyColumn(ItemNames[i].ToString().ToLower(), ItemNames[i].ToString()) { BShow = true, Width = 10 });
             }
             //表格后面为合计列
             tabledisplay.Columns.Add(new DataColumn("合计"));

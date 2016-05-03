@@ -17,7 +17,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Xml;
 using ICSharpCode.SharpZipLib.Zip;
-using DBUtility;
+//using DBUtility;
 
 namespace AutoUpdate
 {
@@ -26,7 +26,7 @@ namespace AutoUpdate
     /// </summary>
     public partial class MainWindow : Window
     {
-        DbHelperMySQL dbOperation;
+        //DbHelperMySQL dbOperation;
 
         //更新包地址
         private string url = "";
@@ -43,7 +43,7 @@ namespace AutoUpdate
         {
             InitializeComponent();
 
-            dbOperation = DBUtility.DbHelperMySQL.CreateDbHelper();
+            //dbOperation = DBUtility.DbHelperMySQL.CreateDbHelper();
 
             pgbUpdate.Maximum = 6;
 

@@ -89,7 +89,7 @@ namespace FoodSafetyMonitoring.Manager
             {
                 DataColumn column = new DataColumn(ItemNames[i]);
                 tabledisplay.Columns.Add(column);
-                MyColumns.Add(ItemNames[i].ToString(), new MyColumn(ItemNames[i].ToString(), ItemNames[i].ToString() + "检测量") { BShow = true, Width = 10 });
+                MyColumns.Add(ItemNames[i].ToString().ToLower(), new MyColumn(ItemNames[i].ToString().ToLower(), ItemNames[i].ToString() + "检测量") { BShow = true, Width = 10 });
                 tabledisplay.Columns.Add(new DataColumn("抽检率" + i));
                 MyColumns.Add("抽检率" + i, new MyColumn("抽检率" + i, "抽检率") { BShow = true, Width = 10 });
             }

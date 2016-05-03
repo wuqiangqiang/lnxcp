@@ -29,8 +29,7 @@ namespace FoodSafetyMonitoring.Manager
         private string page_url;
         private string user_id;
         private System.Windows.Forms.WebBrowser web;
-        private readonly List<string> year = new List<string>() { "2014",
-            "2015", 
+        private readonly List<string> year = new List<string>() { "2015", 
             "2016",
             "2017",
             "2018",
@@ -45,15 +44,26 @@ namespace FoodSafetyMonitoring.Manager
 
         public SysQuarterAnalysis(IDBOperation dbOperation)
         {
+
             InitializeComponent();
             this.dbOperation = dbOperation;
             user_id = (Application.Current.Resources["User"] as UserInfo).ID.ToString();
 
             _year.ItemsSource = year;
-            _year.SelectedIndex = 1;
+            for (int i = 0; i < _year.Items.Count; i++)
+            {
+                if (_year.Items[i].ToString() == DateTime.Now.Year.ToString())
+
+                {
+                    _year.SelectedItem = _year.Items[i];
+                    break;
+                }
+            }
 
             _month.ItemsSource = month;
             _month.SelectedIndex = 2;
+
+            ComboboxTool.InitComboboxSource(_detect_huanjie, "SELECT id,name FROM t_liaoning_huanjie", "cxtj");
 
             //地址从数据库中获取
             page_url = dbOperation.GetDbHelper().GetSingle("select quarterreport from t_url ").ToString();
@@ -71,7 +81,8 @@ namespace FoodSafetyMonitoring.Manager
 
                 System.Windows.Forms.Integration.WindowsFormsHost host = new System.Windows.Forms.Integration.WindowsFormsHost();
                 web = new System.Windows.Forms.WebBrowser();
-                web.Url = new Uri(string.Format(page_url, user_id, "2", (_month.SelectedIndex + 1).ToString(), _year.Text));
+                web.ScriptErrorsSuppressed = true;
+                web.Url = new Uri(string.Format(page_url, user_id, "2", (_month.SelectedIndex + 1).ToString(), _year.Text, _detect_huanjie.SelectedIndex < 1 ? "" : (_detect_huanjie.SelectedItem as Label).Tag));
                 host.Child = web;
                 grid_info.Children.Add(host);
             }

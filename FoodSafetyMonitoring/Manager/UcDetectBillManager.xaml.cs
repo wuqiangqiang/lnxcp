@@ -82,6 +82,7 @@ namespace FoodSafetyMonitoring.Manager
             //ComboboxTool.InitComboboxSource(_detect_object, " SELECT objectId,objectName FROM v_user_object WHERE userid = " + userId);
             //ComboboxTool.InitComboboxSource(_detect_sample, "  SELECT sampleId,sampleName FROM v_user_sample WHERE userid = " + userId);
             //ComboboxTool.InitComboboxSource(_detect_sensitivity, "SELECT sensitivityId,sensitivityName FROM t_det_sensitivity where openFlag = '1'", "lr");
+            ComboboxTool.InitComboboxSource(_detect_method, "select reagentId,reagentName from t_det_reagent where openFlag = '1' and reviewflag = '0'", "lr");
             ComboboxTool.InitComboboxSource(_detect_item, string.Format("SELECT ItemID,ItemNAME FROM t_det_item WHERE  (tradeId ='1'or ifnull(tradeId,'') = '') and OPENFLAG = '1' order by orderId"), "lr");
             _detect_item.SelectionChanged += new SelectionChangedEventHandler(_detect_item_SelectionChanged);
             ComboboxTool.InitComboboxSource(_detect_result, "SELECT resultId,resultName FROM t_det_result where openFlag = '1' ORDER BY id", "lr");
@@ -106,9 +107,11 @@ namespace FoodSafetyMonitoring.Manager
             //this._detect_trade.SelectedIndex = 1;
             this._detect_huanjie.SelectedIndex = 0;
             this._detect_item.SelectedIndex = 0;
-            this._detect_method1.IsChecked = false;
-            this._detect_method2.IsChecked = false;
-            this._detect_method3.IsChecked = false;
+            //this._detect_method1.IsChecked = false;
+            //this._detect_method2.IsChecked = false;
+            //this._detect_method3.IsChecked = false;
+            this._detect_method.SelectedIndex = 0;
+            this._detect_bianhao.Text = "";
             this._detect_object.SelectedIndex = 0;
             this._detect_sample.SelectedIndex = 0;
             this._detect_sensitivity.SelectedIndex = 0;
@@ -155,11 +158,15 @@ namespace FoodSafetyMonitoring.Manager
             {
                 msg = "*请选择样品环节";
             }
+            else if (_detect_bianhao.Text.Trim().Length == 0)
+            {
+                msg = "*请输入样品编号";
+            }
             else if (_detect_item.SelectedIndex < 1)
             {
                 msg = "*请选择检查项目";
             }
-            else if (_detect_method1.IsChecked != true && _detect_method2.IsChecked != true && _detect_method3.IsChecked != true)
+            else if (_detect_method.SelectedIndex < 1)
             {
                 msg = "*请选择检测方法";
             }
@@ -215,11 +222,11 @@ namespace FoodSafetyMonitoring.Manager
                     company_id = dbOperation.GetSingle(string.Format("SELECT COMPANYID from t_company where COMPANYNAME ='{0}' and deptid = '{1}'", _source_company.Text, (Application.Current.Resources["User"] as UserInfo).DepartmentID)).ToString();
                 }
 
-                string sql = string.Format("call p_insert_detect_new_new('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}')"
+                string sql = string.Format("call p_insert_detect_new_new('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}')"
                               , company_id,
                               _detect_number.Text,
                               (_detect_item.SelectedItem as Label).Tag.ToString(),
-                              (_detect_method1.IsChecked == true ? 1 : 0) + (_detect_method2.IsChecked == true ? 2 : 0) + (_detect_method3.IsChecked == true ? 3 : 0),
+                              (_detect_method.SelectedItem as Label).Tag.ToString(),
                               (_detect_object.SelectedItem as Label).Tag.ToString(),
                               (_detect_sample.SelectedItem as Label).Tag.ToString(),
                               (_detect_sensitivity.SelectedItem as Label).Tag.ToString(),
@@ -228,7 +235,8 @@ namespace FoodSafetyMonitoring.Manager
                               (Application.Current.Resources["User"] as UserInfo).ID,
                               System.DateTime.Now,_object_count.Text,_object_label.Text,
                                (_card_brand.SelectedItem as Label).Tag.ToString(),
-                               (_detect_huanjie.SelectedItem as Label).Tag.ToString());
+                               (_detect_huanjie.SelectedItem as Label).Tag.ToString(),
+                               _detect_bianhao.Text);
 
 
                 int i = dbOperation.ExecuteSql(sql);
@@ -260,9 +268,8 @@ namespace FoodSafetyMonitoring.Manager
             this._object_label.Text = "";
             this._detect_huanjie.SelectedIndex = 0;
             this._detect_item.SelectedIndex = 0;
-            this._detect_method1.IsChecked = false;
-            this._detect_method2.IsChecked = false;
-            this._detect_method3.IsChecked = false;
+            this._detect_method.SelectedIndex = 0;
+            this._detect_bianhao.Text = "";
             this._detect_object.SelectedIndex = 0;
             this._detect_sample.SelectedIndex = 0;
             this._detect_sensitivity.SelectedIndex = 0;
@@ -271,24 +278,24 @@ namespace FoodSafetyMonitoring.Manager
             this._entering_datetime.Text = string.Format("{0:g}", System.DateTime.Now);
         }
 
-        private void _detect_method1_Checked(object sender, RoutedEventArgs e)
-        {
-            if ((sender as CheckBox).Name == "_detect_method1")
-            {
-                _detect_method2.IsChecked = false;
-                _detect_method3.IsChecked = false;
-            }
-            else if ((sender as CheckBox).Name == "_detect_method2")
-            {
-                _detect_method1.IsChecked = false;
-                _detect_method3.IsChecked = false;
-            }
-            else if ((sender as CheckBox).Name == "_detect_method3")
-            {
-                _detect_method1.IsChecked = false;
-                _detect_method2.IsChecked = false;
-            }
-        }
+        //private void _detect_method1_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    if ((sender as CheckBox).Name == "_detect_method1")
+        //    {
+        //        _detect_method2.IsChecked = false;
+        //        _detect_method3.IsChecked = false;
+        //    }
+        //    else if ((sender as CheckBox).Name == "_detect_method2")
+        //    {
+        //        _detect_method1.IsChecked = false;
+        //        _detect_method3.IsChecked = false;
+        //    }
+        //    else if ((sender as CheckBox).Name == "_detect_method3")
+        //    {
+        //        _detect_method1.IsChecked = false;
+        //        _detect_method2.IsChecked = false;
+        //    }
+        //}
 
 
         void _source_company_SelectionChanged(object sender, SelectionChangedEventArgs e)

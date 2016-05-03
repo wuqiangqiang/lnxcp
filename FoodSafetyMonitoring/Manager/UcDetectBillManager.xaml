@@ -33,7 +33,7 @@
                     <RowDefinition Height="80"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
-                    <TextBlock FontSize="20" Text="屠宰检测信息录入单" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" ></TextBlock>
+                    <TextBlock FontSize="20" Text="检测信息录入单" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" ></TextBlock>
                 </Grid>
                 <Grid Grid.Row="1">
                     <StackPanel >
@@ -67,13 +67,16 @@
                 </Grid>
                 <Grid Grid.Row="4">
                     <StackPanel >
+                        <TextBlock  Width="70">样品编号:</TextBlock>
+                        <TextBox Width="90" Margin="0" x:Name="_detect_bianhao" MaxLength="20" ></TextBox>
                         <TextBlock  Width="70">检测方法:</TextBlock>
-                        <CheckBox x:Name="_detect_method1" Checked="_detect_method1_Checked" >金标检测卡</CheckBox>
+                        <!--<CheckBox x:Name="_detect_method1" Checked="_detect_method1_Checked" >金标检测卡</CheckBox>
                         <CheckBox x:Name="_detect_method2" Checked="_detect_method1_Checked" >ELISA试剂盒</CheckBox>
-                        <CheckBox x:Name="_detect_method3" Checked="_detect_method1_Checked" >分析检测</CheckBox>
-                        <TextBlock Width="70" Margin="60,0,0,0">检测项目:</TextBlock>
+                        <CheckBox x:Name="_detect_method3" Checked="_detect_method1_Checked" >分析检测</CheckBox>-->
+                        <ComboBox  Width="130" x:Name="_detect_method"  Margin="0,0,0,0"></ComboBox>
+                        <TextBlock Width="70" >检测项目:</TextBlock>
                         <!--<ComboBox  Width="100" x:Name="_detect_trade" IsEnabled="False"></ComboBox>-->
-                        <ComboBox  Width="125" x:Name="_detect_item"  Margin="5,0,0,0"></ComboBox>
+                        <ComboBox  Width="125" x:Name="_detect_item"  Margin="0,0,0,0"></ComboBox>
                         <TextBlock Width="60" >检测对象:</TextBlock>
                         <ComboBox  Width="85" x:Name="_detect_object"></ComboBox>
                     </StackPanel>

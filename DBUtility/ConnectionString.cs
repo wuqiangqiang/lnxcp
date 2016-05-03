@@ -33,6 +33,7 @@ namespace DBUtility
             try
             {
                 strConn = ConfigurationManager.ConnectionStrings[ConnectionConfigurationName].ConnectionString;
+                //strConn = "Server=zrodo2015.mysql.rds.aliyuncs.com;Port = 3306;Database=lnxcp;Uid=zrodo;Pwd=zrd123abc;CharSet=gb2312;";
             }
             catch (Exception)
             {

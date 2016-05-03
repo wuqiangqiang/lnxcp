@@ -52,6 +52,8 @@
                             <TextBlock MinWidth="50">选择月份:</TextBlock>
                             <ComboBox x:Name="_year"   Width="80"  MaxDropDownHeight="200" />
                             <ComboBox x:Name="_month"  Width="60"  MaxDropDownHeight="200" Margin="5,0,0,0"/>
+                            <TextBlock MinWidth="50" >选择环节:</TextBlock>
+                            <ComboBox Width="120" x:Name="_detect_huanjie" />
                             <!--<toolkit:DatePicker x:Name="dtpStartDate" VerticalAlignment="Center"/>
                             <TextBlock xml:space="preserve" MinWidth="10" Margin="5,0,5,0">至</TextBlock>
                             <toolkit:DatePicker x:Name="dtpEndDate" VerticalAlignment="Center" />-->
