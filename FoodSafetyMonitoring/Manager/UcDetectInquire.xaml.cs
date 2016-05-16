@@ -254,7 +254,7 @@ namespace FoodSafetyMonitoring.Manager
 
         private void _export_Click(object sender, RoutedEventArgs e)
         {
-            DataTable table = dbOperation.GetDbHelper().GetDataSet(string.Format("call p_query_detect_new({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}',{15},{16})",
+            DataTable table = dbOperation.GetDbHelper().GetDataSet(string.Format("call p_query_detect_new({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}',{16},{17})",
                   (Application.Current.Resources["User"] as UserInfo).ID,
                 //dtpStartDate.Value.ToString() == dtpEndDate.Value.ToString() ? "" : dtpStartDate.Value.ToString(),
                 //dtpStartDate.Value.ToString() == dtpEndDate.Value.ToString() ? "" : dtpEndDate.Value.ToString(),
@@ -272,6 +272,7 @@ namespace FoodSafetyMonitoring.Manager
                   _detect_person1.SelectedIndex < 1 ? "" : (_detect_person1.SelectedItem as Label).Tag,
                   _detect_type.SelectedIndex < 1 ? "" : (_detect_type.SelectedItem as Label).Tag,
                   _card_brand.SelectedIndex < 1 ? "" : (_card_brand.SelectedItem as Label).Tag,
+                  _detect_huanjie.SelectedIndex < 1 ? "" : (_detect_huanjie.SelectedItem as Label).Tag,
                   0,
                   _tableview.RowTotal)).Tables[0];
 

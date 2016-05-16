@@ -1,7 +1,7 @@
 ﻿<Window x:Class="FoodSafetyMonitoring.LoginWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Height="372" Width="450" WindowStyle="None" AllowsTransparency="True" Background="Transparent" BorderBrush="Transparent" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown">
+    Title="登录" Icon="/logo.ico" Height="372" Width="450"  WindowStartupLocation="CenterScreen" KeyDown="Window_KeyDown" WindowStyle="None" Background="Transparent" AllowsTransparency="True" Topmost="True">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

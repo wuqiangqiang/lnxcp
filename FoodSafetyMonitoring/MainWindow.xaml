@@ -1,14 +1,14 @@
 ﻿<Window x:Class="FoodSafetyMonitoring.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    Title="MainWindow"   AllowsTransparency="False"  WindowStartupLocation="CenterScreen" WindowStyle="None" WindowState="Normal" BorderBrush="Transparent" Icon="/logo.ico" ResizeMode="NoResize">
+    Title="辽宁检测监管系统" Icon="/logo.ico"  WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True"  WindowState="Normal" BorderBrush="#5d5d5d"  BorderThickness="0.6">
     <Window.Resources>
         <Style TargetType="{x:Type TabItem}">
             <Setter  Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TabItem}">
-                        <Border x:Name="layout" BorderBrush="#c6cbd0" BorderThickness="1,1,1,0" Background="{TemplateBinding Background}"
-                               CornerRadius="0,0,0,0"  Margin="1,0,1,0" MouseDown="layout_MouseDown" Tag="{TemplateBinding Header}">
+                        <Border x:Name="layout" BorderThickness="1,1,1,0" Background="#f7f7f7" BorderBrush="#c5cace"
+                               CornerRadius="3,3,0,0"  Margin="0,0,3,0" MouseDown="layout_MouseDown" Tag="{TemplateBinding Header}">
                             <Grid Height="35">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition MinWidth="100"/>
@@ -46,13 +46,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#c6cbd0"/>
-                                <Setter TargetName="layout" Property="Margin" Value="2,0,2,0"/>
-                                <!--<Setter TargetName="_tabtxt" Property="Foreground" Value="White"/>-->
-                            </Trigger>
-                            <Trigger Property="IsSelected" Value="false">
-                                <Setter Property="Background" Value="#fbfbfc"/>
-                                <!--<Setter TargetName="_tabtxt" Property="Foreground" Value="Black"/>-->
+                                <Setter TargetName="layout" Property="Background" Value="White"/>
+                                <Setter TargetName="layout" Property="Margin" Value="0,0,3,-1.4"/>
+                                <Setter TargetName="layout" Property="BorderBrush" Value="#9fa8b1"/>
+                                <Setter TargetName="_tabtxt" Property="Foreground" Value="#333333"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -84,10 +81,6 @@
             <RowDefinition  Height="35"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" x:Name="grid_header">
-            <Grid.Background>
-                <!--<ImageBrush ImageSource="/res/title_bar.jpg"></ImageBrush>-->
-                <SolidColorBrush Color="White" />
-            </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition />
@@ -181,7 +174,7 @@
                 <Image x:Name="_image" Width="14" Height="52" Source="/res/main_left.png" MouseDown="_changeSize_MouseDown" MouseEnter="_changeSize_MouseEnter" MouseLeave="_changeSize_MouseLeave"/>
             </Grid>
             <Grid x:Name="grid_Component" Grid.Column="2">
-                <TabControl x:Name="_tab" Background="White" BorderThickness="0,3,0,0" BorderBrush="#c6cbd0">
+                <TabControl x:Name="_tab" Background="White" BorderThickness="0,1,0,0" BorderBrush="#9fa8b1">
                 </TabControl>
             </Grid>
         </Grid>
